@@ -1,7 +1,57 @@
-[gd_scene format=3 uid="uid://dqkiydloki5h2"]
+[gd_scene load_steps=8 format=3 uid="uid://bpkdddw8jsxva"]
+
+[ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_0wvta"]
+[ext_resource type="Texture2D" uid="uid://bs0mntdxp4dsm" path="res://icon.svg" id="1_yaat2"]
+[ext_resource type="PackedScene" uid="uid://c0aspn5wgta5l" path="res://Overlay/hurtbox.tscn" id="3_lpxco"]
+[ext_resource type="PackedScene" uid="uid://bwwrf067o0ey0" path="res://Overlay/hitbox.tscn" id="4_fc8tp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1kqf"]
+radius = 11.5
+height = 44.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pcplo"]
+size = Vector2(21.3333, 21.3333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1kfkh"]
 
 [node name="Enemy" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("1_0wvta")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.215686, 0.129412, 1)
+texture = ExtResource("1_yaat2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 40)
+rotation = 1.5708
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_j1kqf")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_lpxco")]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+scale = Vector2(6, 6)
+shape = SubResource("RectangleShape2D_pcplo")
+
+[node name="Hitbox" parent="." instance=ExtResource("4_fc8tp")]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+scale = Vector2(7.5, 7.5)
+shape = SubResource("RectangleShape2D_1kfkh")
+
+[node name="Damage_Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]
+[connection signal="timeout" from="Damage_Timer" to="." method="_on_damage_timer_timeout"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]

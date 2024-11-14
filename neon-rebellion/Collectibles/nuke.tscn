@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5ohjpylhs1x8"]
+
+[ext_resource type="Script" path="res://Collectibles/nuke.gd" id="1_88udg"]
+[ext_resource type="Texture2D" uid="uid://tbbby6xjm5k1" path="res://Assets/bombCircle.png" id="1_sbkag"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rv5gs"]
+
+[node name="nuke" type="Area2D"]
+z_index = -1
+scale = Vector2(2.5, 2.5)
+collision_mask = 3
+script = ExtResource("1_88udg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("1_sbkag")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rv5gs")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
