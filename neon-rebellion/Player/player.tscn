@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cjnefjumcefcu"]
+[gd_scene load_steps=10 format=3 uid="uid://cjnefjumcefcu"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_7b0ek"]
 [ext_resource type="Texture2D" uid="uid://bs0mntdxp4dsm" path="res://icon.svg" id="1_sdfpg"]
+[ext_resource type="PackedScene" uid="uid://dnl53k0ipogch" path="res://Scenes/Pause Menu/pause_menu.tscn" id="3_7s2bv"]
 [ext_resource type="PackedScene" uid="uid://c0aspn5wgta5l" path="res://Overlay/hurtbox.tscn" id="3_xnpa4"]
 [ext_resource type="PackedScene" uid="uid://cy4x5pp421ij6" path="res://UI/health_UI.tscn" id="4_pjmot"]
+[ext_resource type="PackedScene" uid="uid://b38fppq6abm6d" path="res://UI/health_bar.tscn" id="6_c43u4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d8n8c"]
 radius = 8.66667
@@ -37,6 +39,15 @@ shape = SubResource("CapsuleShape2D_d8n8c")
 position = Vector2(0, -19)
 zoom = Vector2(0.5, 0.5)
 
+[node name="Pause_Menu" parent="Camera2D" instance=ExtResource("3_7s2bv")]
+visible = false
+y_sort_enabled = true
+offset_left = -368.0
+offset_top = -288.0
+offset_right = -368.0
+offset_bottom = -288.0
+scale = Vector2(8, 8)
+
 [node name="Hurtbox" parent="." instance=ExtResource("3_xnpa4")]
 position = Vector2(0, -19)
 collision_layer = 4
@@ -64,7 +75,7 @@ offset_bottom = -62.0
 [node name="Label" type="Label" parent="."]
 offset_left = -1106.0
 offset_top = -625.0
-offset_right = -845.0
+offset_right = -801.0
 offset_bottom = -526.0
 theme_override_font_sizes/font_size = 72
 text = "KILLS = 0"
@@ -77,6 +88,13 @@ offset_bottom = -507.0
 theme_override_font_sizes/font_size = 72
 text = "XP = 0"
 
+[node name="Health_Bar" parent="." instance=ExtResource("6_c43u4")]
+offset_left = 61.0
+offset_top = -83.0
+offset_right = 101.0
+offset_bottom = -43.0
+
 [connection signal="health_changed" from="." to="healthUI" method="_on_player_health_changed"]
+[connection signal="health_changed" from="." to="Health_Bar" method="_on_player_health_changed"]
 
 [editable path="Hurtbox"]

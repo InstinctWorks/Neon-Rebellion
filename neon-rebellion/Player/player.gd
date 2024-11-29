@@ -5,14 +5,14 @@ extends CharacterBody2D
 ## onready variables
 @onready var health_UI = $healthUI
 @onready var kill_counter = $Label  # Temporary Label
-@onready var xp_counter = $Label2
+@onready var xp_counter = $Label2  # Temporary Label 
 
 ## Constant Variables
 const SPEED = 300.0
 #const ACCELERATION = 10.0
 #const FRICTION = 100.0
 
-const MAX_HP = 100  # Max Health
+
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 @export var ATTACK_INTERVAL = 0.25  # Attack Interval in seconds (Attack Cooldown)
 const DAMAGE_DURATION = 1.25  # Damage Duration for flashes
@@ -24,13 +24,15 @@ const projectile = preload("res://Projectiles/projectile.tscn")
 ## Signals
 signal health_changed(value)
 
-## Variables
+# Variables
 var sprite  # Sprite Reference
 
-var current_hp = MAX_HP  # Set the Player Current Health
+var max_hp = 100  # Max Health
+var current_hp = max_hp  # Set the Player Current Health
 var dmg = 1  # Set the Player dmg
-var dmg_multipler = 1
-var kills = 0
+var dmg_multipler = 1  # 
+var kills = 0  # 
+
 
 var attack_timer = 0.0  # Attack Timer to control the Player Auto Attacks
 var flash_timer = 0.0  # Timer for Flashes
@@ -46,62 +48,64 @@ var paused = false  # Flag Check if the game is paused for any reasons (Implemen
 
 
 func _ready():
-	health_UI.set_max_health(MAX_HP)  # Set Player Max HP in health UI
+	health_UI.set_max_health(max_hp)  # Set Player Max HP in health UI
 	
 	sprite = get_node("Sprite2D")
 	
 	add_to_group("Player")
 
+
 ## Update the Player Visibility - Antoine
 func update_player_visibility():
 	sprite.visible = visible
 
-		
+
 func _physics_process(delta):
 	
-	## Movement Control
-	var velocity = Vector2.ZERO
-	var input_vector = Vector2.ZERO
-	
-	input_vector.x = Input.get_action_strength("right") - Input.get_action_strength("left")
-	input_vector.y = Input.get_action_strength("down") - Input.get_action_strength("up")
-	input_vector = input_vector.normalized()
-	
-	if input_vector != Vector2.ZERO:
-		velocity = input_vector * SPEED
-		#velocity = velocity.move_toward(input_vector * SPEED, ACCELERATION * delta)
-	else:
-		velocity = Vector2.ZERO
-	
-	#print("Player Velocity: ", velocity)
-	
-	if attack_timer <= 0:
-		attack_timer = ATTACK_INTERVAL
-		attack()
-	
-	attack_timer -= delta
-	
-	## Handles Damaage Indicator when Player takes damage
-	if taking_damage:
-		damage_timer -= delta
-		flash_timer -= delta  # Reduce the Flash Timer
-		## Flash the Player when taking damage (Toggle Visibility On/Off)
-		if flash_timer <= 0:
-			#print("Taking Damage")
-			flash_timer = FLASH_INTERVAL
-			visible = !visible  # Flip the Visibility (true/false)
-			update_player_visibility()  # Update the Player Sprite Visibility
+	if is_alive:
+		## Movement Control
+		var velocity = Vector2.ZERO
+		var input_vector = Vector2.ZERO
 		
-		if damage_timer <= 0:
-			taking_damage = false
-			visible = true  # Set the Player visibility to true
-			update_player_visibility()  # Update the Player to be visible
-	
-	move_and_collide(velocity * delta)
-	
-	#move_and_slide()
+		input_vector.x = Input.get_action_strength("right") - Input.get_action_strength("left")
+		input_vector.y = Input.get_action_strength("down") - Input.get_action_strength("up")
+		input_vector = input_vector.normalized()
+		
+		if input_vector != Vector2.ZERO:
+			velocity = input_vector * SPEED
+			#velocity = velocity.move_toward(input_vector * SPEED, ACCELERATION * delta)
+		else:
+			velocity = Vector2.ZERO
+		
+		#print("Player Velocity: ", velocity)
+		
+		if attack_timer <= 0:
+			attack_timer = ATTACK_INTERVAL
+			attack()
+		
+		attack_timer -= delta
+		
+		## Handles Damaage Indicator when Player takes damage
+		if taking_damage:
+			damage_timer -= delta
+			flash_timer -= delta  # Reduce the Flash Timer
+			## Flash the Player when taking damage (Toggle Visibility On/Off)
+			if flash_timer <= 0:
+				#print("Taking Damage")
+				flash_timer = FLASH_INTERVAL
+				visible = !visible  # Flip the Visibility (true/false)
+				update_player_visibility()  # Update the Player Sprite Visibility
+			
+			if damage_timer <= 0:
+				taking_damage = false
+				visible = true  # Set the Player visibility to true
+				update_player_visibility()  # Update the Player to be visible
+		
+		move_and_collide(velocity * delta)
+		
+		#move_and_slide()
 
-
+##
 func collect(item: String):
 	var world = get_tree().get_root().get_node("/root/World")
 	
@@ -118,17 +122,17 @@ func collect(item: String):
 		world.current_enemies = 0  # Reset current enemies count in world script
 		print("All enemies destroyed!")
 	elif  item == "heal":
-		if current_hp < MAX_HP:
-			#current_hp = clamp(current_hp, 0, MAX_HP)
-			current_hp += round(MAX_HP * 0.25)
-			#var potential_hp = current_hp + round(MAX_HP * 0.25)
-			current_hp = clamp(current_hp, 0, MAX_HP)
+		if current_hp < max_hp:
+			#current_hp = clamp(current_hp, 0, max_hp)
+			current_hp += round(max_hp * 0.25)
+			#var potential_hp = current_hp + round(max_hp * 0.25)
+			current_hp = clamp(current_hp, 0, max_hp)
 			health_changed.emit(current_hp)
 			print("Player Healed: ", current_hp)
 	
 	world.current_items -= 1
 
-
+##
 func find_nearest_enemy():
 	var nearest_enemy = null
 	var closest_distance = INF
@@ -142,7 +146,7 @@ func find_nearest_enemy():
 	
 	return nearest_enemy
 
-
+##
 func attack():
 	
 	var nearest_enemy = find_nearest_enemy()
@@ -179,7 +183,7 @@ func attack():
 		## Spawn the projectile
 		owner.add_child(bullet)
 
-
+##
 func take_damage(dmg):
 	
 	current_hp -= dmg
@@ -198,5 +202,9 @@ func take_damage(dmg):
 
 
 func die():
-	get_tree().reload_current_scene()
-	print("Game Reset")
+	is_alive = false
+	visible = false
+	update_player_visibility()
+	
+	#get_tree().reload_current_scene()
+	#print("Game Reset")

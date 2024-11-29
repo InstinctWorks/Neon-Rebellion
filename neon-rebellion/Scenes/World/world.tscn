@@ -27,3 +27,6 @@ autostart = true
 
 [connection signal="timeout" from="Enemy_Timer" to="." method="_on_enemy_timer_timeout"]
 [connection signal="timeout" from="Item_Timer" to="." method="_on_item_timer_timeout"]
+
+[editable path="Player"]
+[editable path="Player/Hurtbox"]

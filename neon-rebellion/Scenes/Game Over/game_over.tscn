@@ -1,7 +1,15 @@
-[gd_scene format=3 uid="uid://b4fq5x2pvx8mp"]
+[gd_scene load_steps=2 format=3 uid="uid://b4fq5x2pvx8mp"]
+
+[ext_resource type="Script" path="res://Scenes/Game Over/game_over.gd" id="1_m1hhx"]
 
 [node name="Game_Over" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_m1hhx")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
