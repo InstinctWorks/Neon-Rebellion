@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://chdjgmvub7stb"]
+[gd_scene load_steps=7 format=3 uid="uid://chdjgmvub7stb"]
 
 [ext_resource type="Texture2D" uid="uid://bt8kggc203fir" path="res://Assets/1.png" id="1_ff3k5"]
 [ext_resource type="PackedScene" uid="uid://cjnefjumcefcu" path="res://Player/player.tscn" id="1_lgygn"]
 [ext_resource type="Script" path="res://Scenes/World/world.gd" id="1_rnxtr"]
 [ext_resource type="PackedScene" uid="uid://n5r7igufdcgk" path="res://Enemy/boss.tscn" id="4_rqpug"]
 [ext_resource type="PackedScene" uid="uid://d2wj5y471i4jt" path="res://UI/game_UI.tscn" id="5_23x0k"]
+[ext_resource type="PackedScene" uid="uid://b4fq5x2pvx8mp" path="res://Scenes/Game Over/game_over.tscn" id="6_tv0oo"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_rnxtr")
@@ -33,6 +34,15 @@ position = Vector2(1954, -1257)
 [node name="Game_UI" parent="." instance=ExtResource("5_23x0k")]
 visible = false
 
+[node name="Game_Over" parent="." instance=ExtResource("6_tv0oo")]
+visible = false
+offset_left = -289.0
+offset_top = -150.0
+offset_right = -249.0
+offset_bottom = -110.0
+scale = Vector2(4, 4)
+
+[connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
 [connection signal="timeout" from="Enemy_Timer" to="." method="_on_enemy_timer_timeout"]
 [connection signal="timeout" from="Item_Timer" to="." method="_on_item_timer_timeout"]
 

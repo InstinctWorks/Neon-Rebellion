@@ -9,21 +9,21 @@ extends CharacterBody2D
 
 
 ## Constant Variables
-const SPEED = 125.0
+const SPEED = 150.0
 const drag_speed = 100.0
 
 
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 const DAMAGE_DURATION = 1.0  # Damage Duration for flashes
 const target = "Player"
-const dmg = 1
+const dmg = 5
 
 ## References
 const xp = preload("res://Collectibles/xp.tscn")
 var world = preload("res://Scenes/World/world.tscn")
 
 ## Signals
-signal enemy_died
+signal boss_died
 signal health_changed(value)
 
 ## Variables
@@ -139,8 +139,10 @@ func take_damage(dmg):
 func die():
 	var xp_drop = xp.instantiate()
 	xp_drop.position = global_position
+	xp_drop.update_xp(50)
+	#print("Boss: XP Drop Value = ", xp_drop.xp)
 	
-	emit_signal("enemy_died")  # Emit Signal when enemy dies
+	emit_signal("boss_died")  # Emit Signal when enemy dies
 	
 	#player.kills += 1
 	#player.kill_counter.text = "KILLS = " + str(player.kills)
@@ -160,6 +162,7 @@ func die():
 
 ## Start Damage Timer if the Player enters
 func _on_hitbox_area_entered(area: Area2D) -> void:
+	print("Hitbox Area Entered: ", area.name)
 	if area.name == "Hurtbox" and area.get_parent().name == "Player":
 		$Damage_Timer.start()
 

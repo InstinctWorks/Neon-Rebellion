@@ -30,7 +30,9 @@ offset_bottom = 93.0
 grow_horizontal = 2
 scale = Vector2(2, 2)
 
-[node name="Upgrade_Menu" parent="CanvasLayer" instance=ExtResource("3_nsjou")]
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Upgrade_Menu" parent="CanvasLayer2" instance=ExtResource("3_nsjou")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -42,5 +44,27 @@ offset_right = -56.0
 offset_bottom = 22.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -675.0
+offset_top = -283.0
+offset_right = -370.0
+offset_bottom = -184.0
+theme_override_font_sizes/font_size = 72
+text = "KILLS = 0"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 455.0
+offset_top = -248.0
+offset_right = 523.0
+offset_bottom = -225.0
+text = "XP = 0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="level_up" from="CanvasLayer/XP_Bar" to="." method="_on_xp_bar_level_up"]

@@ -1,15 +1,78 @@
-[gd_scene load_steps=2 format=3 uid="uid://b4fq5x2pvx8mp"]
+[gd_scene load_steps=4 format=3 uid="uid://b4fq5x2pvx8mp"]
 
 [ext_resource type="Script" path="res://Scenes/Game Over/game_over.gd" id="1_m1hhx"]
+[ext_resource type="Shader" path="res://Scenes/Pause Menu/pause_menu.gdshader" id="2_httvm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jaqo"]
+shader = ExtResource("2_httvm")
+shader_parameter/amount = 3.0
 
 [node name="Game_Over" type="Control"]
+z_index = 2
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_m1hhx")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_3jaqo")
+offset_left = -5349.0
+offset_top = -5560.0
+offset_right = -5309.0
+offset_bottom = -5520.0
+scale = Vector2(250, 250)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -211.0
+offset_top = -174.0
+offset_right = 202.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 72
+text = "GAME OVER"
+
+[node name="Box" type="VBoxContainer" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -226.0
+offset_top = -48.0
+offset_right = -76.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Restart" type="Button" parent="CanvasLayer/Box"]
+layout_mode = 2
+text = "Restart"
+
+[node name="Main Menu" type="Button" parent="CanvasLayer/Box"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="pressed" from="CanvasLayer/Box/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="CanvasLayer/Box/Main Menu" to="." method="_on_main_menu_pressed"]

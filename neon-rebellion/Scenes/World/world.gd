@@ -15,6 +15,7 @@ var items_list = [
 @onready var player = $Player
 @onready var pause_menu = $Player/Camera2D/Pause_Menu
 @onready var game_ui = $Game_UI
+@onready var game_over: Control = $Game_Over
 
 ## Reference Variables
 const ENEMY = preload("res://Enemy/enemy.tscn")  
@@ -103,3 +104,11 @@ func pause_Menu():
 		print("World: Game Paused")
 	
 	paused = !paused
+
+
+## Display Game Over Menu when Player dies
+func _on_player_player_died() -> void:
+	Engine.time_scale = 0
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	game_over.visible = true
+	game_over.canvas_layer.visible = true

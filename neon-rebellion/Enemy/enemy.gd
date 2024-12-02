@@ -20,6 +20,7 @@ const dmg = 1
 ## References
 const xp = preload("res://Collectibles/xp.tscn")
 var world = preload("res://Scenes/World/world.tscn")
+var game_ui = preload("res://UI/game_UI.tscn")
 
 ## Signals
 signal enemy_died
@@ -52,6 +53,8 @@ func _ready():
 	sprite = get_node("Sprite2D")
 	player = get_tree().get_root().get_node("/root/World/Player")
 	world = get_tree().get_root().get_node("/root/World")
+	game_ui = get_tree().get_root().get_node("/root/World/Player/Camera2D/Game_UI")
+	
 	add_to_group("Enemy")
 	$Hurtbox.add_to_group("Enemy")
 
@@ -137,6 +140,7 @@ func take_damage(dmg):
 func die():
 	var xp_drop = xp.instantiate()
 	xp_drop.position = global_position
+	xp_drop.update_xp(5)
 	
 	emit_signal("enemy_died")  # Emit Signal when enemy dies
 	

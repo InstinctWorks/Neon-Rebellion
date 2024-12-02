@@ -5,8 +5,8 @@ extends CharacterBody2D
 ## onready variables
 @onready var health_UI = $healthUI
 @onready var health_bar = $Health_Bar
-@onready var kill_counter = $Label  # Temporary Label
-@onready var xp_counter = $Label2  # Temporary Label 
+@onready var kill_counter = $Camera2D/Game_UI/Label  # Temporary Label
+@onready var xp_counter = $Camera2D/Game_UI/Label2  # Temporary Label 
 @onready var game_ui: Control = $Camera2D/Game_UI
 
 ## Constant Variables
@@ -25,6 +25,7 @@ const projectile = preload("res://Projectiles/projectile.tscn")
 
 ## Signals
 signal health_changed(value)
+signal player_died()
 
 # Variables
 var sprite  # Sprite Reference
@@ -115,6 +116,9 @@ func _physics_process(delta):
 				#health_bar.bar_timer.start()
 				update_player_visibility()  # Update the Player to be visible
 		
+		## Flip Sprite Horizontally to face left/right
+		sprite.flip_h = velocity.x < 0
+		
 		move_and_collide(velocity * delta)
 		
 		#move_and_slide()
@@ -150,6 +154,37 @@ func collect(item: String):
 			print("Player Healed: ", current_hp)
 	
 	world.current_items -= 1
+
+#func collect(item: Object):
+	#var world = get_tree().get_root().get_node("/root/World")
+	#
+	#if item.name == "xp":
+		#var xp_drop = preload("res://Collectibles/xp.tscn").instantiate()
+		#
+		#xp += xp_drop.xp
+		#
+		#xp_counter.text = "XP = " + str(xp)
+		#
+		#game_ui.update_xp(item.xp)
+		##print("XP Collected: XP Level = ", xp)
+	#elif item.name == "nuke":
+		#var enemies = get_tree().get_nodes_in_group("Enemy")
+		#
+		#for enemy in enemies:
+			#if enemy.has_method("die") and !enemy.boss:
+				#enemy.die()  # Destroy all enemies by removing them from the scene
+		#world.current_enemies = 0  # Reset current enemies count in world script
+		#print("All enemies destroyed!")
+	#elif  item.name == "heal":
+		#if current_hp < max_hp:
+			##current_hp = clamp(current_hp, 0, max_hp)
+			#current_hp += round(max_hp * 0.25)
+			##var potential_hp = current_hp + round(max_hp * 0.25)
+			#current_hp = clamp(current_hp, 0, max_hp)
+			#health_changed.emit(current_hp)
+			#print("Player Healed: ", current_hp)
+	#
+	#world.current_items -= 1
 
 ##
 func find_nearest_enemy():
@@ -225,5 +260,6 @@ func die():
 	visible = false
 	update_player_visibility()
 	
+	player_died.emit()
 	#get_tree().reload_current_scene()
 	#print("Game Reset")

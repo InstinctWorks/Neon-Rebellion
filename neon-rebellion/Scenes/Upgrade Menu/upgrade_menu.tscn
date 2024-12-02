@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/Upgrade Menu/upgrade_menu.gd" id="1_4rjla"]
 
 [node name="Upgrade_Menu" type="Control"]
-z_index = -1
+z_index = 1
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -16,14 +16,18 @@ offset_right = 32.0
 offset_bottom = 32.0
 alignment = 1
 
-[node name="Button" type="Button" parent="Box"]
+[node name="Option_1" type="Button" parent="Box"]
 layout_mode = 2
 text = "Option"
 
-[node name="Button2" type="Button" parent="Box"]
+[node name="Option_2" type="Button" parent="Box"]
 layout_mode = 2
 text = "Option"
 
-[node name="Button3" type="Button" parent="Box"]
+[node name="Option_3" type="Button" parent="Box"]
 layout_mode = 2
 text = "Option"
+
+[connection signal="pressed" from="Box/Option_1" to="." method="_on_option_1_pressed"]
+[connection signal="pressed" from="Box/Option_2" to="." method="_on_option_2_pressed"]
+[connection signal="pressed" from="Box/Option_3" to="." method="_on_option_3_pressed"]
