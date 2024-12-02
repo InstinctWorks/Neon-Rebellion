@@ -1,19 +1,57 @@
-[gd_scene load_steps=2 format=3 uid="uid://b38fppq6abm6d"]
+[gd_scene load_steps=6 format=3 uid="uid://b38fppq6abm6d"]
 
 [ext_resource type="Script" path="res://UI/health_bar.gd" id="1_4oda6"]
 
-[node name="Health_Bar" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("1_4oda6")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1uj3f"]
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
-layout_mode = 0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_puecj"]
+bg_color = Color(0.17498, 0.721604, 9.62615e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dyfnf"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0, 0, 0, 0.27451)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qcaf"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Health_Bar" type="ProgressBar"]
+z_index = 1
 offset_right = 4.0
 offset_bottom = 27.0
 rotation = 1.5708
 scale = Vector2(5, 5)
-value = 100.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_1uj3f")
+theme_override_styles/fill = SubResource("StyleBoxFlat_puecj")
+value = 70.0
+fill_mode = 3
 show_percentage = false
+script = ExtResource("1_4oda6")
+
+[node name="Damage_Bar" type="ProgressBar" parent="."]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_dyfnf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1qcaf")
+value = 80.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Damage_Timer" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
+
+[node name="Bar_Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Damage_Timer" to="." method="_on_damage_timer_timeout"]
+[connection signal="timeout" from="Bar_Timer" to="." method="_on_bar_timer_timeout"]

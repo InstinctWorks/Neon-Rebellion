@@ -5,10 +5,11 @@ extends CharacterBody2D
 
 
 ## Onready Variables
-@onready var health_bar = $Health_Bar
+@onready var health_bar = $CanvasLayer/Health_Bar
+
 
 ## Constant Variables
-const SPEED = 250.0
+const SPEED = 125.0
 const drag_speed = 100.0
 
 
@@ -26,7 +27,7 @@ signal enemy_died
 signal health_changed(value)
 
 ## Variables
-var max_hp = 100
+var max_hp = 500
 var current_hp = max_hp
 
 var flash_timer = 0.0  # Timer for Flashes
@@ -46,12 +47,11 @@ var direction  # Check where the player is
 
 func _ready():
 	health_bar.set_max_health(max_hp)
-	health_bar.bar_timer.start()
 	
 	sprite = get_node("Sprite2D")
 	player = get_tree().get_root().get_node("/root/World/Player")
 	world = get_tree().get_root().get_node("/root/World")
-	add_to_group("Enemy")
+	add_to_group("Boss")
 	$Hurtbox.add_to_group("Enemy")
 
 func update_enemy_visibility():
@@ -123,7 +123,9 @@ func take_damage(dmg):
 	current_hp -= dmg
 	health_changed.emit(current_hp)
 	
-	#print("Enemy Current Health: ", current_hp)
+	$CanvasLayer/Health_Bar.enable_fade = false  # Disable Health Bar Fading for Boss
+	
+	print("Boss Current Health: ", current_hp)
 	
 	taking_damage = true
 	damage_timer = DAMAGE_DURATION
@@ -139,11 +141,11 @@ func die():
 	
 	emit_signal("enemy_died")  # Emit Signal when enemy dies
 	
-	player.kills += 1
-	player.kill_counter.text = "KILLS = " + str(player.kills)
+	#player.kills += 1
+	#player.kill_counter.text = "KILLS = " + str(player.kills)
 	
-	print("Current Enemies: ", world.current_enemies)
-	world.current_enemies -= 1
+	#print("Current Enemies: ", world.current_enemies)
+	#world.current_enemies -= 1
 	
 	get_tree().root.add_child(xp_drop)
 	

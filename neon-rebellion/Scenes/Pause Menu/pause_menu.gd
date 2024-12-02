@@ -7,7 +7,6 @@ extends Control
 
 func _on_resume_pressed() -> void:
 	main.pause_Menu()
-	pass # Replace with function body.
 
 
 func _on_main_menu_pressed() -> void:

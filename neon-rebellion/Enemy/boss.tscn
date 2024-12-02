@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=3 uid="uid://n5r7igufdcgk"]
+
+[ext_resource type="Script" path="res://Enemy/boss.gd" id="1_g0jwk"]
+[ext_resource type="Texture2D" uid="uid://bs0mntdxp4dsm" path="res://icon.svg" id="1_ugw02"]
+[ext_resource type="PackedScene" uid="uid://c0aspn5wgta5l" path="res://Overlay/hurtbox.tscn" id="2_ks2xw"]
+[ext_resource type="PackedScene" uid="uid://bwwrf067o0ey0" path="res://Overlay/hitbox.tscn" id="3_a54ag"]
+[ext_resource type="PackedScene" uid="uid://b38fppq6abm6d" path="res://UI/health_bar.tscn" id="4_lqcoq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_so4l5"]
+radius = 11.5
+height = 44.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6shus"]
+size = Vector2(21.3333, 21.3333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rf6jw"]
+
+[node name="Boss" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("1_g0jwk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.215686, 0.129412, 1)
+texture = ExtResource("1_ugw02")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 40)
+rotation = 1.5708
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_so4l5")
+
+[node name="Hurtbox" parent="." instance=ExtResource("2_ks2xw")]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+scale = Vector2(6, 6)
+shape = SubResource("RectangleShape2D_6shus")
+
+[node name="Hitbox" parent="." instance=ExtResource("3_a54ag")]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+scale = Vector2(7.5, 7.5)
+shape = SubResource("RectangleShape2D_rf6jw")
+
+[node name="Damage_Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Health_Bar" parent="CanvasLayer" instance=ExtResource("4_lqcoq")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 279.0
+offset_top = -42.9999
+offset_right = 283.0
+offset_bottom = 67.0001
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -275.0
+offset_top = -97.0
+offset_right = -203.0
+offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 32
+text = "Boss"
+
+[connection signal="health_changed" from="." to="CanvasLayer/Health_Bar" method="_on_boss_health_changed"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]

@@ -67,6 +67,7 @@ progress = 5414.3
 [node name="Marker2D" type="Marker2D" parent="Path2D/PathFollow2D"]
 
 [node name="healthUI" parent="." instance=ExtResource("4_pjmot")]
+visible = false
 offset_left = -65.0
 offset_top = -102.0
 offset_right = -25.0
@@ -89,10 +90,10 @@ theme_override_font_sizes/font_size = 72
 text = "XP = 0"
 
 [node name="Health_Bar" parent="." instance=ExtResource("6_c43u4")]
-offset_left = 61.0
-offset_top = -83.0
-offset_right = 101.0
-offset_bottom = -43.0
+offset_left = 67.0
+offset_top = -81.0
+offset_right = 71.0
+offset_bottom = -54.0
 
 [connection signal="health_changed" from="." to="healthUI" method="_on_player_health_changed"]
 [connection signal="health_changed" from="." to="Health_Bar" method="_on_player_health_changed"]

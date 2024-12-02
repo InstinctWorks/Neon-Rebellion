@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpkdddw8jsxva"]
+[gd_scene load_steps=9 format=3 uid="uid://bpkdddw8jsxva"]
 
 [ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_0wvta"]
 [ext_resource type="Texture2D" uid="uid://bs0mntdxp4dsm" path="res://icon.svg" id="1_yaat2"]
 [ext_resource type="PackedScene" uid="uid://c0aspn5wgta5l" path="res://Overlay/hurtbox.tscn" id="3_lpxco"]
 [ext_resource type="PackedScene" uid="uid://bwwrf067o0ey0" path="res://Overlay/hitbox.tscn" id="4_fc8tp"]
+[ext_resource type="PackedScene" uid="uid://b38fppq6abm6d" path="res://UI/health_bar.tscn" id="5_3op0c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1kqf"]
 radius = 11.5
@@ -48,6 +49,13 @@ shape = SubResource("RectangleShape2D_1kfkh")
 [node name="Damage_Timer" type="Timer" parent="."]
 wait_time = 0.1
 
+[node name="Health_Bar" parent="." instance=ExtResource("5_3op0c")]
+offset_left = 67.0
+offset_top = -101.0
+offset_right = 71.0
+offset_bottom = -74.0
+
+[connection signal="health_changed" from="." to="Health_Bar" method="_on_enemy_health_changed"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]

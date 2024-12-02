@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 ## onready variables
 @onready var health_UI = $healthUI
+@onready var health_bar = $Health_Bar
 @onready var kill_counter = $Label  # Temporary Label
 @onready var xp_counter = $Label2  # Temporary Label 
 
@@ -15,7 +16,7 @@ const SPEED = 300.0
 
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 @export var ATTACK_INTERVAL = 0.25  # Attack Interval in seconds (Attack Cooldown)
-const DAMAGE_DURATION = 1.25  # Damage Duration for flashes
+const DAMAGE_DURATION = 1.00  # Damage Duration for flashes
 @export var LAUNCH_OFFSET = 50  # Launch Offset position for projectiles
 
 ## References
@@ -49,10 +50,15 @@ var paused = false  # Flag Check if the game is paused for any reasons (Implemen
 
 func _ready():
 	health_UI.set_max_health(max_hp)  # Set Player Max HP in health UI
+	health_bar.set_max_health(max_hp)  # Set Player Max HP in health bar
+	#health_bar.init_health(max_hp)
+	health_bar.bar_timer.start()
 	
-	sprite = get_node("Sprite2D")
+	sprite = get_node("Sprite2D")  # Intialize the Player Sprite
 	
-	add_to_group("Player")
+	taking_damage = true
+	
+	add_to_group("Player")  # Add Player to a group
 
 
 ## Update the Player Visibility - Antoine
@@ -87,8 +93,14 @@ func _physics_process(delta):
 		
 		## Handles Damaage Indicator when Player takes damage
 		if taking_damage:
+			
 			damage_timer -= delta
 			flash_timer -= delta  # Reduce the Flash Timer
+			health_bar.visible = true
+			#health_bar.self_modulate = Color(1,1,1,1)
+			#health_bar.damage_bar.self_modulate = Color(1,1,1,1)
+			#health_bar.modulate = Color(1,1,1,1)
+			
 			## Flash the Player when taking damage (Toggle Visibility On/Off)
 			if flash_timer <= 0:
 				#print("Taking Damage")
@@ -99,6 +111,7 @@ func _physics_process(delta):
 			if damage_timer <= 0:
 				taking_damage = false
 				visible = true  # Set the Player visibility to true
+				#health_bar.bar_timer.start()
 				update_player_visibility()  # Update the Player to be visible
 		
 		move_and_collide(velocity * delta)
