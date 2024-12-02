@@ -19,12 +19,13 @@ var items_list = [
 
 ## Reference Variables
 const ENEMY = preload("res://Enemy/enemy.tscn")  
+const BOSS = preload("res://Enemy/boss.tscn")
 
 ## Constant Varibables 
 const MAX_ITEMS = 10  # Max Amount of Items
 
 
-@export var max_enemy = 25  # Max Amount of Enemies 
+@export var max_enemy = 50  # Max Amount of Enemies 
 
 ## Counter Variables
 var current_enemies = 0  # Set Current Enemies Counter
@@ -40,6 +41,34 @@ func _ready():
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		pause_Menu()
+
+## Handles Showing/Hiding the Pause Menu
+func pause_Menu():
+	## If paused (true) stop the game, show the pause menu
+	if paused:
+		pause_menu.hide()
+		Engine.time_scale = 1
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		player.set_physics_process(true)
+		print("World: Game Paused")
+	## Otherwise paused (false) resume the game, hide the pause menu
+	else:
+		pause_menu.show()
+		Engine.time_scale = 0
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		player.set_physics_process(false)
+		print("World: Game Paused")
+	
+	paused = !paused
+
+
+func restart_game():
+	print("World: Restarting Game")
+	var items = get_tree().get_nodes_in_group("Collectibles")
+	for item in items:
+		#if item.is_in_group("Collectibles"):
+		#print("World: Child = ", child.get_groups())
+		item.queue_free()
 
 ## Handles Enemy Spawning along the outside of the PLayer's Camera View
 func _on_enemy_timer_timeout():
@@ -86,29 +115,27 @@ func _on_item_timer_timeout():
 		current_items += 1
 		print("Spawned an Item, now there is: ", current_items)
 
-## Handles Showing/Hiding the Pause Menu
-func pause_Menu():
-	## If paused (true) stop the game, show the pause menu
-	if paused:
-		pause_menu.hide()
-		Engine.time_scale = 1
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-		player.set_physics_process(true)
-		print("World: Game Paused")
-	## Otherwise paused (false) resume the game, hide the pause menu
-	else:
-		pause_menu.show()
-		Engine.time_scale = 0
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		player.set_physics_process(false)
-		print("World: Game Paused")
-	
-	paused = !paused
 
+func _on_boss_timer_timeout() -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	## Randomize position outside the camera view
+	$Player/Path2D/PathFollow2D.progress_ratio = rng.randf_range(0.0, 1.0)
+	#print("Spawning enemy at progress ratio: ", $Player/Path2D/PathFollow2D.progress_ratio)
+	
+	var boss = BOSS.instantiate()
+	
+	boss.global_position = $Player/Path2D/PathFollow2D/Marker2D.global_position
+	#print("Enemy spawned at: ", enemy.global_position)
+	
+	#enemy.connect("enemy_died", self, "_on_enemy_died")
+	
+	add_child(boss)
 
 ## Display Game Over Menu when Player dies
 func _on_player_player_died() -> void:
 	Engine.time_scale = 0
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	game_over.visible = true
+	game_over.visible = true  
 	game_over.canvas_layer.visible = true

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://i4m1b0ft4kvx"]
+
+[ext_resource type="Texture2D" uid="uid://bua6k2qfd8hh2" path="res://Assets/Sand_Colour.PNG" id="1_mnlhp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dudh"]
+
+[node name="Wall" type="StaticBody2D"]
+scale = Vector2(10, 10)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_mnlhp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8dudh")

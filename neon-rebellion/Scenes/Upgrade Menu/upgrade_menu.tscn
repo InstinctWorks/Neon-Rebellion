@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://driu4m7ysf2cx"]
+[gd_scene load_steps=5 format=3 uid="uid://driu4m7ysf2cx"]
 
 [ext_resource type="Script" path="res://Scenes/Upgrade Menu/upgrade_menu.gd" id="1_4rjla"]
+[ext_resource type="Shader" path="res://Scenes/Pause Menu/pause_menu.gdshader" id="2_5a8l0"]
+[ext_resource type="Texture2D" uid="uid://bua6k2qfd8hh2" path="res://Assets/Sand_Colour.PNG" id="2_ec2qi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ld8d"]
+shader = ExtResource("2_5a8l0")
+shader_parameter/amount = 3.0
 
 [node name="Upgrade_Menu" type="Control"]
 z_index = 1
@@ -10,23 +16,40 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_4rjla")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_5ld8d")
+offset_left = -5349.0
+offset_top = -5560.0
+offset_right = -5309.0
+offset_bottom = -5520.0
+scale = Vector2(250, 250)
+
 [node name="Box" type="HBoxContainer" parent="."]
 layout_mode = 0
 offset_right = 32.0
 offset_bottom = 32.0
+scale = Vector2(5, 5)
+theme_override_constants/separation = 15
 alignment = 1
 
 [node name="Option_1" type="Button" parent="Box"]
+modulate = Color(0.288697, 0.708028, 0.332048, 1)
 layout_mode = 2
-text = "Option"
+text = "MAX HP+"
+icon = ExtResource("2_ec2qi")
 
 [node name="Option_2" type="Button" parent="Box"]
+self_modulate = Color(1, 1, 0.415686, 1)
 layout_mode = 2
-text = "Option"
+text = "SPEED+"
+icon = ExtResource("2_ec2qi")
 
 [node name="Option_3" type="Button" parent="Box"]
+modulate = Color(0.797679, 0.272961, 0.324898, 1)
 layout_mode = 2
-text = "Option"
+text = "DAMAGE+"
+icon = ExtResource("2_ec2qi")
 
 [connection signal="pressed" from="Box/Option_1" to="." method="_on_option_1_pressed"]
 [connection signal="pressed" from="Box/Option_2" to="." method="_on_option_2_pressed"]

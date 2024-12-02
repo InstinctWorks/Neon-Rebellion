@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bt8kggc203fir" path="res://Assets/1.png" id="1_ff3k5"]
 [ext_resource type="PackedScene" uid="uid://cjnefjumcefcu" path="res://Player/player.tscn" id="1_lgygn"]
 [ext_resource type="Script" path="res://Scenes/World/world.gd" id="1_rnxtr"]
-[ext_resource type="PackedScene" uid="uid://n5r7igufdcgk" path="res://Enemy/boss.tscn" id="4_rqpug"]
 [ext_resource type="PackedScene" uid="uid://d2wj5y471i4jt" path="res://UI/game_UI.tscn" id="5_23x0k"]
 [ext_resource type="PackedScene" uid="uid://b4fq5x2pvx8mp" path="res://Scenes/Game Over/game_over.tscn" id="6_tv0oo"]
+[ext_resource type="PackedScene" uid="uid://i4m1b0ft4kvx" path="res://Scenes/World/wall.tscn" id="7_74t8t"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_rnxtr")
@@ -19,6 +19,24 @@ scale = Vector2(2, 2)
 scale = Vector2(6, 6)
 texture = ExtResource("1_ff3k5")
 
+[node name="Walls" type="Node" parent="."]
+
+[node name="Left_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+position = Vector2(-3536, -25)
+scale = Vector2(10, 250)
+
+[node name="Right_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+position = Vector2(3537, -25)
+scale = Vector2(10, 250)
+
+[node name="Top_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+position = Vector2(0, -2010)
+scale = Vector2(452, 10)
+
+[node name="Bottom_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+position = Vector2(0, 2006)
+scale = Vector2(452, 10)
+
 [node name="Player" parent="." instance=ExtResource("1_lgygn")]
 
 [node name="Enemy_Timer" type="Timer" parent="."]
@@ -28,8 +46,9 @@ autostart = true
 wait_time = 5.0
 autostart = true
 
-[node name="Boss" parent="." instance=ExtResource("4_rqpug")]
-position = Vector2(1954, -1257)
+[node name="Boss_Timer" type="Timer" parent="."]
+wait_time = 150.0
+autostart = true
 
 [node name="Game_UI" parent="." instance=ExtResource("5_23x0k")]
 visible = false
@@ -45,6 +64,7 @@ scale = Vector2(4, 4)
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
 [connection signal="timeout" from="Enemy_Timer" to="." method="_on_enemy_timer_timeout"]
 [connection signal="timeout" from="Item_Timer" to="." method="_on_item_timer_timeout"]
+[connection signal="timeout" from="Boss_Timer" to="." method="_on_boss_timer_timeout"]
 
 [editable path="Player"]
 [editable path="Player/Camera2D/Game_UI"]

@@ -9,7 +9,7 @@ extends CharacterBody2D
 
 
 ## Constant Variables
-const SPEED = 150.0
+
 const drag_speed = 100.0
 
 
@@ -27,8 +27,10 @@ signal boss_died
 signal health_changed(value)
 
 ## Variables
-var max_hp = 500
+var max_hp = 1000
 var current_hp = max_hp
+var base_speed = 150
+var speed = base_speed
 
 var flash_timer = 0.0  # Timer for Flashes
 var damage_timer = 0.0 # Timer for damage indicator
@@ -47,6 +49,7 @@ var direction  # Check where the player is
 var boss = true  # Flag Check for Boss
 
 func _ready():
+	health_bar.enable_fade = false
 	health_bar.set_max_health(max_hp)
 	
 	sprite = get_node("Sprite2D")
@@ -74,11 +77,11 @@ func _physics_process(delta):
 	
 	#position += (player.position - position) / drag_speed  # Move towards the player
 	
-	var velocity = direction * SPEED
+	var velocity = direction * speed
 	
 	#print("Direction to Player: ", direction)
 	
-	#velocity = (player.global_position - global_position).normalized() * SPEED
+	#velocity = (player.global_position - global_position).normalized() * speed
 	
 	## Flip Sprite Horizontally to face left/right
 	sprite.flip_h = direction.x < 0
@@ -124,7 +127,7 @@ func take_damage(dmg):
 	current_hp -= dmg
 	health_changed.emit(current_hp)
 	
-	$CanvasLayer/Health_Bar.enable_fade = false  # Disable Health Bar Fading for Boss
+	health_bar.enable_fade = false  # Disable Health Bar Fading for Boss
 	
 	print("Boss Current Health: ", current_hp)
 	
@@ -175,3 +178,12 @@ func _on_hitbox_area_exited(area: Area2D) -> void:
 func _on_damage_timer_timeout() -> void:
 	if player:
 		player.take_damage(dmg)
+
+
+func _on_charge_cooldown_timeout() -> void:
+	speed = 600
+	$Charge_Timer.start()
+
+
+func _on_charge_timer_timeout() -> void:
+	speed = base_speed

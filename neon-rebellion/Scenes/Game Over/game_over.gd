@@ -9,6 +9,9 @@ func _ready() -> void:
 	canvas_layer.visible = false
 
 func _on_restart_pressed() -> void:
+	var world = get_tree().get_root().get_node("/root/World")
+	world.restart_game()
+	
 	get_tree().reload_current_scene()
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	Engine.time_scale = 1  ## Resume the game

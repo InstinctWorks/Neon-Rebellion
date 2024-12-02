@@ -90,6 +90,9 @@ func set_max_health(new_health):
 	max_value = max_health  # Update the Health Bar max value
 	value = current_health
 	
+	self.modulate = Color(1,1,1,1)
+	bar_timer.start()
+	
 	damage_bar.max_value = current_health
 	damage_bar.value = current_health
 

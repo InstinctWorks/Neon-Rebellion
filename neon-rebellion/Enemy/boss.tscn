@@ -57,7 +57,7 @@ _data = {
 [node name="Boss" type="CharacterBody2D"]
 scale = Vector2(3, 3)
 collision_layer = 8
-collision_mask = 8
+collision_mask = 0
 script = ExtResource("1_g0jwk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -89,6 +89,13 @@ shape = SubResource("RectangleShape2D_rf6jw")
 
 [node name="Damage_Timer" type="Timer" parent="."]
 wait_time = 0.1
+
+[node name="Charge_Timer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="Charge_Cooldown" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -132,6 +139,8 @@ autoplay = "Boss"
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]
 [connection signal="timeout" from="Damage_Timer" to="." method="_on_damage_timer_timeout"]
+[connection signal="timeout" from="Charge_Timer" to="." method="_on_charge_timer_timeout"]
+[connection signal="timeout" from="Charge_Cooldown" to="." method="_on_charge_cooldown_timeout"]
 
 [editable path="Hurtbox"]
 [editable path="Hitbox"]

@@ -8,7 +8,7 @@ extends CharacterBody2D
 @onready var health_bar = $Health_Bar
 
 ## Constant Variables
-const SPEED = 225.0
+var SPEED = 225.0
 const drag_speed = 100.0
 
 
@@ -47,6 +47,7 @@ var direction  # Check where the player is
 var boss = false  # Flag check if Boss
 
 func _ready():
+	health_bar.enable_fade = true
 	health_bar.set_max_health(max_hp)
 	health_bar.bar_timer.start()
 	
@@ -54,6 +55,8 @@ func _ready():
 	player = get_tree().get_root().get_node("/root/World/Player")
 	world = get_tree().get_root().get_node("/root/World")
 	game_ui = get_tree().get_root().get_node("/root/World/Player/Camera2D/Game_UI")
+	
+	randomize()  
 	
 	add_to_group("Enemy")
 	$Hurtbox.add_to_group("Enemy")
@@ -76,6 +79,11 @@ func _physics_process(delta):
 	#var height_distance = abs(player.global_position.y - global_position.y)
 	
 	#position += (player.position - position) / drag_speed  # Move towards the player
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	SPEED = randi_range(200, 250)
+	#print("Enemy: Speed: ", SPEED)
 	
 	var velocity = direction * SPEED
 	
@@ -127,7 +135,7 @@ func take_damage(dmg):
 	current_hp -= dmg
 	health_changed.emit(current_hp)
 	
-	#print("Enemy Current Health: ", current_hp)
+	print("Enemy Current Health: ", current_hp)
 	
 	taking_damage = true
 	damage_timer = DAMAGE_DURATION

@@ -10,7 +10,7 @@ extends CharacterBody2D
 @onready var game_ui: Control = $Camera2D/Game_UI
 
 ## Constant Variables
-const SPEED = 300.0
+
 #const ACCELERATION = 10.0
 #const FRICTION = 100.0
 
@@ -32,8 +32,10 @@ var sprite  # Sprite Reference
 
 var max_hp = 100  # Max Health
 var current_hp = max_hp  # Set the Player Current Health
-var dmg = 1  # Set the Player dmg
-var dmg_multipler = 1  # 
+var speed = 300.0
+var base_dmg = 10  # Base dmg
+var dmg = 10  # Set the Player dmg
+var dmg_multipler = 1.0  # 
 var kills = 0  # 
 
 
@@ -51,6 +53,7 @@ var paused = false  # Flag Check if the game is paused for any reasons (Implemen
 
 
 func _ready():
+	health_bar.enable_fade = true
 	health_UI.set_max_health(max_hp)  # Set Player Max HP in health UI
 	health_bar.set_max_health(max_hp)  # Set Player Max HP in health bar
 	#health_bar.init_health(max_hp)
@@ -80,8 +83,8 @@ func _physics_process(delta):
 		input_vector = input_vector.normalized()
 		
 		if input_vector != Vector2.ZERO:
-			velocity = input_vector * SPEED
-			#velocity = velocity.move_toward(input_vector * SPEED, ACCELERATION * delta)
+			velocity = input_vector * speed
+			#velocity = velocity.move_toward(input_vector * speed, ACCELERATION * delta)
 		else:
 			velocity = Vector2.ZERO
 		
@@ -210,7 +213,7 @@ func attack():
 		
 		var bullet = projectile.instantiate()
 		#print("Player Damage: ", bullet.dmg, "* ", dmg_multipler)
-		dmg = bullet.dmg * dmg_multipler
+		bullet.dmg = dmg * dmg_multipler
 		
 		
 		## Determine the direction the enemy will be facing (Left/Right)
@@ -247,13 +250,24 @@ func take_damage(dmg):
 	damage_timer = DAMAGE_DURATION
 	#flash_timer = FLASH_INTERVAL # Reset the flash timer
 	
-	print("Player Current Health: ", current_hp)
+	print("Player Current Health: ", current_hp, "/", max_hp)
 	
 	if current_hp <= 0:
 		print("Player has Died")
 		die()
 		pass
 
+func upgrade(upgrade: String):
+	
+	if upgrade == "hp":
+		max_hp += 25
+		health_bar.set_max_health(max_hp)
+	elif upgrade == "speed":
+		speed += 25
+	elif upgrade == "dmg":
+		dmg_multipler += 0.2
+		dmg += base_dmg * dmg_multipler
+		print("Player: DMG Upgraded! DMG Now = ", dmg)
 
 func die():
 	is_alive = false
