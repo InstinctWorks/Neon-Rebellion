@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbe4x6ndmcjv3"]
+[gd_scene load_steps=3 format=3 uid="uid://cbe4x6ndmcjv3"]
+
+[ext_resource type="Script" path="res://UI/xp_bar.gd" id="1_ltm7r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60h81"]
 bg_color = Color(0.944516, 0.847515, 0, 1)
@@ -9,3 +11,4 @@ offset_bottom = 27.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_60h81")
 value = 25.0
 show_percentage = false
+script = ExtResource("1_ltm7r")

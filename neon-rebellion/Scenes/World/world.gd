@@ -10,7 +10,7 @@ var items_list = [
 ]
 
 ## Onready Variables
-@onready var health_UI = $Player
+#@onready var health_UI = $Player
 
 @onready var player = $Player
 
@@ -58,7 +58,7 @@ func _on_enemy_timer_timeout():
 		
 		#enemy.connect("enemy_died", self, "_on_enemy_died")
 		
-		add_child(enemy)
+		#add_child(enemy)
 		current_enemies += 1
 		#print("Spawned an Enemy, now there is: ", current_enemies)
 	
