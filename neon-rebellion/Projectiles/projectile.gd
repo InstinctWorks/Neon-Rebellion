@@ -21,7 +21,7 @@ func _on_area_entered(area):
 	if area.is_in_group("Collectibles") or area.is_in_group("Player"):
 		return
 	
-	if area.is_in_group("Enemy"):
+	if area.is_in_group("Enemy") or area.is_in_group("Boss"):
 		var enemy = area.get_parent()
 		enemy.take_damage(dmg)
 		queue_free()

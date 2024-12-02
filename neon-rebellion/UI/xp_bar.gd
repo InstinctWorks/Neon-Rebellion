@@ -16,3 +16,21 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+## Set Health and Update the Health Bar
+func set_xp():
+	max_xp = max_value
+	value = current_xp  # Update the XP Bar value
+	
+
+# TODO Implement XP Bar
+func add_xp(amount: int) -> void:
+	current_xp += amount
+	
+	if current_xp >= max_xp:
+		current_xp -= max_xp
+		emit_signal("level_up")
+	
+	value = current_xp
+	
+	print("XP Bar: XP Collected = ", current_xp)

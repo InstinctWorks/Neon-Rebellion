@@ -10,35 +10,40 @@ shader_parameter/amount = 3.0
 [node name="Pause_Menu" type="Control"]
 z_index = 2
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_bcmay")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -1
 material = SubResource("ShaderMaterial_10s5r")
 layout_mode = 0
-offset_left = -5236.0
-offset_top = -5515.0
-offset_right = -5196.0
-offset_bottom = -5475.0
+offset_left = -5349.0
+offset_top = -5560.0
+offset_right = -5309.0
+offset_bottom = -5520.0
 scale = Vector2(250, 250)
 
 [node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 17.0
-offset_top = -40.0
-offset_right = 79.0
-offset_bottom = -17.0
+layout_mode = 1
+offset_left = 16.0
+offset_top = -20.0
+offset_right = 78.0
+offset_bottom = 3.0
 text = "PAUSED"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 z_index = 2
 y_sort_enabled = true
-layout_mode = 0
-offset_right = 70.0
-offset_bottom = 66.0
+layout_mode = 1
+offset_top = 10.0
+offset_right = 96.0
+offset_bottom = 82.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 z_index = 2
@@ -54,6 +59,8 @@ text = "Resume"
 z_index = 2
 layout_mode = 2
 text = "Main Menu"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Main_Menu" to="." method="_on_main_menu_pressed"]

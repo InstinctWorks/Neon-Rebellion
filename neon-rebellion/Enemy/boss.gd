@@ -44,6 +44,7 @@ var sprite
 
 var direction  # Check where the player is
 
+var boss = true  # Flag Check for Boss
 
 func _ready():
 	health_bar.set_max_health(max_hp)
@@ -51,7 +52,7 @@ func _ready():
 	sprite = get_node("Sprite2D")
 	player = get_tree().get_root().get_node("/root/World/Player")
 	world = get_tree().get_root().get_node("/root/World")
-	add_to_group("Boss")
+	add_to_group("Enemy")
 	$Hurtbox.add_to_group("Enemy")
 
 func update_enemy_visibility():

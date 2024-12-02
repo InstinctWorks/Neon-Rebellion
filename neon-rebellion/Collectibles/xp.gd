@@ -2,6 +2,8 @@ extends Area2D
 
 ## Handle XP Collectible
 
+var xp = 5  # Default XP Value
+
 func _ready():
 	add_to_group("Collectibles")
 

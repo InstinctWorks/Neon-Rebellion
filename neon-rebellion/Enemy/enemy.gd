@@ -8,7 +8,7 @@ extends CharacterBody2D
 @onready var health_bar = $Health_Bar
 
 ## Constant Variables
-const SPEED = 250.0
+const SPEED = 225.0
 const drag_speed = 100.0
 
 
@@ -43,6 +43,7 @@ var sprite
 
 var direction  # Check where the player is
 
+var boss = false  # Flag check if Boss
 
 func _ready():
 	health_bar.set_max_health(max_hp)

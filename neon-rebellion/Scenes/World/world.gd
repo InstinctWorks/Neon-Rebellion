@@ -13,8 +13,8 @@ var items_list = [
 #@onready var health_UI = $Player
 
 @onready var player = $Player
-
 @onready var pause_menu = $Player/Camera2D/Pause_Menu
+@onready var game_ui = $Game_UI
 
 ## Reference Variables
 const ENEMY = preload("res://Enemy/enemy.tscn")  
@@ -58,7 +58,7 @@ func _on_enemy_timer_timeout():
 		
 		#enemy.connect("enemy_died", self, "_on_enemy_died")
 		
-		#add_child(enemy)
+		add_child(enemy)
 		current_enemies += 1
 		#print("Spawned an Enemy, now there is: ", current_enemies)
 	

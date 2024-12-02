@@ -1,7 +1,46 @@
-[gd_scene format=3 uid="uid://d2wj5y471i4jt"]
+[gd_scene load_steps=4 format=3 uid="uid://d2wj5y471i4jt"]
+
+[ext_resource type="PackedScene" uid="uid://cbe4x6ndmcjv3" path="res://UI/xp_bar.tscn" id="1_16luj"]
+[ext_resource type="Script" path="res://UI/game_ui.gd" id="1_24ioo"]
+[ext_resource type="PackedScene" uid="uid://driu4m7ysf2cx" path="res://Scenes/Upgrade Menu/upgrade_menu.tscn" id="3_nsjou"]
 
 [node name="Game_UI" type="Control"]
+z_index = -1
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_24ioo")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="XP_Bar" parent="CanvasLayer" instance=ExtResource("1_16luj")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -361.0
+offset_top = 66.0
+offset_right = -1.0
+offset_bottom = 93.0
+grow_horizontal = 2
+scale = Vector2(2, 2)
+
+[node name="Upgrade_Menu" parent="CanvasLayer" instance=ExtResource("3_nsjou")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = -18.0
+offset_right = -56.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="level_up" from="CanvasLayer/XP_Bar" to="." method="_on_xp_bar_level_up"]

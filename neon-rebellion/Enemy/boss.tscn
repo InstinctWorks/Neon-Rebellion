@@ -51,6 +51,7 @@ shape = SubResource("RectangleShape2D_rf6jw")
 wait_time = 0.1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
 
 [node name="Health_Bar" parent="CanvasLayer" instance=ExtResource("4_lqcoq")]
 anchors_preset = 7

@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var health_bar = $Health_Bar
 @onready var kill_counter = $Label  # Temporary Label
 @onready var xp_counter = $Label2  # Temporary Label 
+@onready var game_ui: Control = $Camera2D/Game_UI
 
 ## Constant Variables
 const SPEED = 300.0
@@ -123,14 +124,19 @@ func collect(item: String):
 	var world = get_tree().get_root().get_node("/root/World")
 	
 	if item == "xp":
-		xp += 1
+		var xp_drop = preload("res://Collectibles/xp.tscn").instantiate()
+		
+		xp += xp_drop.xp
+		
 		xp_counter.text = "XP = " + str(xp)
+		
+		game_ui.update_xp(xp_drop.xp)
 		#print("XP Collected: XP Level = ", xp)
 	elif item == "nuke":
 		var enemies = get_tree().get_nodes_in_group("Enemy")
 		
 		for enemy in enemies:
-			if enemy.has_method("die"):
+			if enemy.has_method("die") and !enemy.boss:
 				enemy.die()  # Destroy all enemies by removing them from the scene
 		world.current_enemies = 0  # Reset current enemies count in world script
 		print("All enemies destroyed!")

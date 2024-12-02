@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://chdjgmvub7stb"]
+[gd_scene load_steps=6 format=3 uid="uid://chdjgmvub7stb"]
 
 [ext_resource type="Texture2D" uid="uid://bt8kggc203fir" path="res://Assets/1.png" id="1_ff3k5"]
 [ext_resource type="PackedScene" uid="uid://cjnefjumcefcu" path="res://Player/player.tscn" id="1_lgygn"]
 [ext_resource type="Script" path="res://Scenes/World/world.gd" id="1_rnxtr"]
 [ext_resource type="PackedScene" uid="uid://n5r7igufdcgk" path="res://Enemy/boss.tscn" id="4_rqpug"]
+[ext_resource type="PackedScene" uid="uid://d2wj5y471i4jt" path="res://UI/game_UI.tscn" id="5_23x0k"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_rnxtr")
@@ -29,8 +30,12 @@ autostart = true
 [node name="Boss" parent="." instance=ExtResource("4_rqpug")]
 position = Vector2(1954, -1257)
 
+[node name="Game_UI" parent="." instance=ExtResource("5_23x0k")]
+visible = false
+
 [connection signal="timeout" from="Enemy_Timer" to="." method="_on_enemy_timer_timeout"]
 [connection signal="timeout" from="Item_Timer" to="." method="_on_item_timer_timeout"]
 
 [editable path="Player"]
+[editable path="Player/Camera2D/Game_UI"]
 [editable path="Player/Hurtbox"]
