@@ -19,6 +19,7 @@ script = ExtResource("1_4rjla")
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -1
 material = SubResource("ShaderMaterial_5ld8d")
+layout_mode = 0
 offset_left = -5349.0
 offset_top = -5560.0
 offset_right = -5309.0

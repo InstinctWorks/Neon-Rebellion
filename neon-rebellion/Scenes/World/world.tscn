@@ -38,6 +38,7 @@ position = Vector2(0, 2006)
 scale = Vector2(452, 10)
 
 [node name="Player" parent="." instance=ExtResource("1_lgygn")]
+ATTACK_INTERVAL = 1.0
 
 [node name="Enemy_Timer" type="Timer" parent="."]
 autostart = true

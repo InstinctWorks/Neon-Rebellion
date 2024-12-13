@@ -8,13 +8,14 @@ extends CharacterBody2D
 @onready var kill_counter = $Camera2D/Game_UI/Label  # Temporary Label
 @onready var xp_counter = $Camera2D/Game_UI/Label2  # Temporary Label 
 @onready var game_ui: Control = $Camera2D/Game_UI
+@onready var i_frames: Timer = $"I-Frames"
 
 ## Constant Variables
 
 #const ACCELERATION = 10.0
 #const FRICTION = 100.0
 
-
+const INVINCIBILITY_DURATION = 0.3  # Duration of Invinvibility period in seconds (Invincibility Frames)
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 @export var ATTACK_INTERVAL = 0.25  # Attack Interval in seconds (Attack Cooldown)
 const DAMAGE_DURATION = 1.00  # Damage Duration for flashes
@@ -33,8 +34,8 @@ var sprite  # Sprite Reference
 var max_hp = 100  # Max Health
 var current_hp = max_hp  # Set the Player Current Health
 var speed = 300.0
-var base_dmg = 10  # Base dmg
-var dmg = 10  # Set the Player dmg
+var base_dmg = 15  # Base dmg
+var dmg = base_dmg  # Set the Player dmg
 var dmg_multipler = 1.0  # 
 var kills = 0  # 
 
@@ -42,10 +43,12 @@ var kills = 0  #
 var attack_timer = 0.0  # Attack Timer to control the Player Auto Attacks
 var flash_timer = 0.0  # Timer for Flashes
 var damage_timer = 0.0 # Timer for damage indicator
+var invincible_timer = 0
 
 var xp = 0  # XP Counter
 
 var taking_damage = false  # Flag Check if the Player is taking damage
+var invincible = false  # Flag Check if the Player is invincible 
 
 var is_alive = true  # Flag Check if the Player is alive
 
@@ -53,7 +56,7 @@ var paused = false  # Flag Check if the game is paused for any reasons (Implemen
 
 
 func _ready():
-	health_bar.enable_fade = true
+	health_bar.enable_fade = false
 	health_UI.set_max_health(max_hp)  # Set Player Max HP in health UI
 	health_bar.set_max_health(max_hp)  # Set Player Max HP in health bar
 	#health_bar.init_health(max_hp)
@@ -68,7 +71,7 @@ func _ready():
 
 ## Update the Player Visibility - Antoine
 func update_player_visibility():
-	sprite.visible = visible
+	sprite.visible = sprite.visible
 
 
 func _physics_process(delta):
@@ -101,7 +104,8 @@ func _physics_process(delta):
 			
 			damage_timer -= delta
 			flash_timer -= delta  # Reduce the Flash Timer
-			health_bar.visible = true
+			
+			#health_bar.visible = true
 			#health_bar.self_modulate = Color(1,1,1,1)
 			#health_bar.damage_bar.self_modulate = Color(1,1,1,1)
 			#health_bar.modulate = Color(1,1,1,1)
@@ -109,13 +113,14 @@ func _physics_process(delta):
 			## Flash the Player when taking damage (Toggle Visibility On/Off)
 			if flash_timer <= 0:
 				#print("Taking Damage")
-				flash_timer = FLASH_INTERVAL
-				visible = !visible  # Flip the Visibility (true/false)
+				flash_timer = FLASH_INTERVAL  # Reset the flash timer
+				sprite.visible = !sprite.visible  # Flip the Visibility (true/false)
 				update_player_visibility()  # Update the Player Sprite Visibility
 			
 			if damage_timer <= 0:
 				taking_damage = false
-				visible = true  # Set the Player visibility to true
+				invincible = false
+				sprite.visible = true  # Set the Player visibility to true
 				#health_bar.bar_timer.start()
 				update_player_visibility()  # Update the Player to be visible
 		
@@ -147,7 +152,7 @@ func collect(item: String):
 				enemy.die()  # Destroy all enemies by removing them from the scene
 		world.current_enemies = 0  # Reset current enemies count in world script
 		print("All enemies destroyed!")
-	elif  item == "heal":
+	elif item == "healing":
 		if current_hp < max_hp:
 			#current_hp = clamp(current_hp, 0, max_hp)
 			current_hp += round(max_hp * 0.25)
@@ -240,22 +245,48 @@ func attack():
 		## Spawn the projectile
 		owner.add_child(bullet)
 
-##
-func take_damage(dmg):
+
+#func start_i_frames():
+	#invincible = true
+	#i_frames.start()
+
+#func end_i_frame():
+	#invincible = false
+
+## Turns off i-frames when timer runs out
+func _on_i_frames_timeout() -> void:
+	invincible = false
+
+## Handles damage taken
+func take_damage(dmg: int, source: Node):
 	
+	## Skips damage step if invincible
+	if invincible:
+		print("Player: Player is Invincible")
+		return
+	
+	#if !invincible:
 	current_hp -= dmg
 	health_changed.emit(current_hp)
 	
 	taking_damage = true
+	#invincible = true
+	
 	damage_timer = DAMAGE_DURATION
+	invincible_timer = INVINCIBILITY_DURATION
 	#flash_timer = FLASH_INTERVAL # Reset the flash timer
+	
+	## Apply i-frames if the Player is taking damage from the Boss
+	if source.has_method("is_boss"):
+		invincible = true
+		i_frames.start()
 	
 	print("Player Current Health: ", current_hp, "/", max_hp)
 	
 	if current_hp <= 0:
 		print("Player has Died")
 		die()
-		pass
+		#pass
 
 func upgrade(upgrade: String):
 	
@@ -265,8 +296,8 @@ func upgrade(upgrade: String):
 	elif upgrade == "speed":
 		speed += 25
 	elif upgrade == "dmg":
-		dmg_multipler += 0.2
-		dmg += base_dmg * dmg_multipler
+		dmg_multipler += 0.15
+		dmg = base_dmg * dmg_multipler
 		print("Player: DMG Upgraded! DMG Now = ", dmg)
 
 func die():

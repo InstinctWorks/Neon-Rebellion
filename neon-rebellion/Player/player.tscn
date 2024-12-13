@@ -79,16 +79,6 @@ shape = SubResource("CapsuleShape2D_d8n8c")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -19)
 
-[node name="Pause_Menu" parent="Camera2D" instance=ExtResource("3_7s2bv")]
-visible = false
-z_index = 3
-y_sort_enabled = true
-offset_left = -368.0
-offset_top = -288.0
-offset_right = -368.0
-offset_bottom = -288.0
-scale = Vector2(8, 8)
-
 [node name="Game_UI" parent="Camera2D" instance=ExtResource("4_qjfmc")]
 z_index = 1
 
@@ -103,6 +93,16 @@ offset_left = 700.0
 offset_top = -500.0
 offset_right = 740.0
 offset_bottom = -401.0
+
+[node name="Pause_Menu" parent="Camera2D" instance=ExtResource("3_7s2bv")]
+visible = false
+z_index = 3
+y_sort_enabled = true
+offset_left = -368.0
+offset_top = -288.0
+offset_right = -368.0
+offset_bottom = -288.0
+scale = Vector2(8, 8)
 
 [node name="Hurtbox" parent="." instance=ExtResource("3_xnpa4")]
 position = Vector2(0, -19)
@@ -159,8 +159,12 @@ libraries = {
 }
 autoplay = "Player"
 
+[node name="I-Frames" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="health_changed" from="." to="healthUI" method="_on_player_health_changed"]
 [connection signal="health_changed" from="." to="Health_Bar" method="_on_player_health_changed"]
+[connection signal="timeout" from="I-Frames" to="." method="_on_i_frames_timeout"]
 
 [editable path="Camera2D/Game_UI"]
 [editable path="Hurtbox"]

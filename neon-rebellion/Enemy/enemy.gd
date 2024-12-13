@@ -2,8 +2,6 @@ extends CharacterBody2D
 
 ## Enemy (Melee)
 
-
-
 ## Onready Variables
 @onready var health_bar = $Health_Bar
 
@@ -15,7 +13,7 @@ const drag_speed = 100.0
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 const DAMAGE_DURATION = 1.0  # Damage Duration for flashes
 const target = "Player"
-const dmg = 1
+const dmg = 3
 
 ## References
 const xp = preload("res://Collectibles/xp.tscn")
@@ -49,7 +47,7 @@ var boss = false  # Flag check if Boss
 func _ready():
 	health_bar.enable_fade = true
 	health_bar.set_max_health(max_hp)
-	health_bar.bar_timer.start()
+	#health_bar.bar_timer.start()
 	
 	sprite = get_node("Sprite2D")
 	player = get_tree().get_root().get_node("/root/World/Player")
@@ -62,7 +60,7 @@ func _ready():
 	$Hurtbox.add_to_group("Enemy")
 
 func update_enemy_visibility():
-	sprite.visible = visible
+	sprite.visible = sprite.visible
 
 func _physics_process(delta):
 	
@@ -117,12 +115,12 @@ func _physics_process(delta):
 		if flash_timer <= 0:
 			#print("Taking Damage")
 			flash_timer = FLASH_INTERVAL
-			visible = !visible  # Flip the Visibility (true/false)
+			sprite.visible = !sprite.visible  # Flip the Visibility (true/false)
 			update_enemy_visibility()  # Update the Enemy Sprite Visibility
 		
 		if damage_timer <= 0:
 			taking_damage = false
-			visible = true  # Set the Enemy visibility to true
+			sprite.visible = true  # Set the Enemy visibility to true
 			health_bar.bar_timer.start()
 			update_enemy_visibility()  # Update the Enemy to be visible
 			print("Enemy: Damage Timer ran out")
@@ -135,7 +133,7 @@ func take_damage(dmg):
 	current_hp -= dmg
 	health_changed.emit(current_hp)
 	
-	print("Enemy Current Health: ", current_hp)
+	#print("Enemy Current Health: ", current_hp)
 	
 	taking_damage = true
 	damage_timer = DAMAGE_DURATION
@@ -181,4 +179,4 @@ func _on_hitbox_area_exited(area: Area2D) -> void:
 ## Applies Damage each time the timer runs out
 func _on_damage_timer_timeout() -> void:
 	if player:
-		player.take_damage(dmg)
+		player.take_damage(dmg, self)

@@ -16,7 +16,7 @@ const drag_speed = 100.0
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 const DAMAGE_DURATION = 1.0  # Damage Duration for flashes
 const target = "Player"
-const dmg = 5
+const dmg = 10
 
 ## References
 const xp = preload("res://Collectibles/xp.tscn")
@@ -122,6 +122,10 @@ func _physics_process(delta):
 	move_and_collide(velocity * delta)
 	#move_and_slide()
 
+## Call to check its the Boss
+func is_boss() -> bool:
+	return true
+
 ## Handles Damage Taken
 func take_damage(dmg):
 	current_hp -= dmg
@@ -177,13 +181,15 @@ func _on_hitbox_area_exited(area: Area2D) -> void:
 ## Applies Damage each time the timer runs out
 func _on_damage_timer_timeout() -> void:
 	if player:
-		player.take_damage(dmg)
+		player.take_damage(dmg, self)
 
-
+## Increase Boss speed for charge attack
 func _on_charge_cooldown_timeout() -> void:
 	speed = 600
 	$Charge_Timer.start()
+	print("Boss is charging! (Speed): ", speed)
 
-
+## Reverts Boss speed to normal
 func _on_charge_timer_timeout() -> void:
 	speed = base_speed
+	print("Boss is cooling down! (Speed): ", speed)

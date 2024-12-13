@@ -98,7 +98,7 @@ wait_time = 5.0
 autostart = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = -1
+layer = 0
 
 [node name="Health_Bar" parent="CanvasLayer" instance=ExtResource("4_lqcoq")]
 anchors_preset = 7

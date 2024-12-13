@@ -17,10 +17,9 @@ grow_vertical = 2
 script = ExtResource("1_24ioo")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = -1
+layer = 0
 
 [node name="XP_Bar" parent="CanvasLayer" instance=ExtResource("1_16luj")]
-z_index = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -74,5 +73,6 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_font_sizes/font_size = 72
+text = "00:00"
 
 [connection signal="level_up" from="CanvasLayer/XP_Bar" to="." method="_on_xp_bar_level_up"]

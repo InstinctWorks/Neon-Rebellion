@@ -3,9 +3,10 @@
 [ext_resource type="Script" path="res://UI/xp_bar.gd" id="1_ltm7r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60h81"]
-bg_color = Color(0.944516, 0.847515, 0, 1)
+bg_color = Color(0.295577, 0.761074, 0, 1)
 
 [node name="XP_Bar" type="ProgressBar"]
+z_index = 2
 offset_right = 360.0
 offset_bottom = 27.0
 scale = Vector2(3, 3)
