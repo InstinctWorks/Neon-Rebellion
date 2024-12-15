@@ -38,7 +38,7 @@ position = Vector2(0, 2006)
 scale = Vector2(452, 10)
 
 [node name="Player" parent="." instance=ExtResource("1_lgygn")]
-ATTACK_INTERVAL = 1.0
+ATTACK_INTERVAL = 0.75
 
 [node name="Enemy_Timer" type="Timer" parent="."]
 autostart = true
@@ -66,7 +66,3 @@ scale = Vector2(4, 4)
 [connection signal="timeout" from="Enemy_Timer" to="." method="_on_enemy_timer_timeout"]
 [connection signal="timeout" from="Item_Timer" to="." method="_on_item_timer_timeout"]
 [connection signal="timeout" from="Boss_Timer" to="." method="_on_boss_timer_timeout"]
-
-[editable path="Player"]
-[editable path="Player/Camera2D/Game_UI"]
-[editable path="Player/Hurtbox"]

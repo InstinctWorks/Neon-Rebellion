@@ -33,12 +33,12 @@ func _process(delta: float) -> void:
 func update_kills() -> void:
 	player.kills += 1
 	kill_counter.text = "KILLS = " + str(player.kills)
-	print("Game UI: KILLS Update")
+	#print("Game UI: KILLS Update")
 
 ## Update the XP Bar
 func update_xp(amount: int) -> void:
 	xp_bar.add_xp(amount)
-	print("Game UI: XP Sent to XP Bar")
+	print("Game UI: XP Received %s. XP Sent to XP Bar" % amount)
 
 func format_time(seconds) -> String:
 	var minutes = int(seconds) / 60

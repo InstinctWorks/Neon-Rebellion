@@ -23,7 +23,7 @@ func set_xp():
 	value = current_xp  # Update the XP Bar value
 	
 
-# TODO Implement XP Bar
+## Add XP to the XP bar
 func add_xp(amount: int) -> void:
 	current_xp += amount
 	

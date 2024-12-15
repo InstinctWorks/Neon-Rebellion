@@ -3,7 +3,7 @@ extends ProgressBar
 ## Controls Health Bar
 
 #@onready var health_bar = $ProgressBar
-@onready var stylebox: StyleBoxFlat
+#@onready var stylebox: StyleBoxFlat
 @onready var damage_timer = $Damage_Timer
 @onready var bar_timer = $Bar_Timer
 @onready var damage_bar = $Damage_Bar
@@ -13,7 +13,7 @@ var current_health = max_health
 #var health = 0 : set = _set_health
 var fade = 0
 
-var enable_fade = true
+var enable_fade = true  # Flag Check for those who health bar will fade
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,14 +23,22 @@ func _ready() -> void:
 
 ## Handles Visual Update every frame
 func _process(delta):
-	#var health_percentage = value / max_value
-	#if health_percentage > 0.5:
-		#self.bg_color = Color(0, 1, 0)  # Green
-	#elif health_percentage > 0.25:
-		#stylebox.bg_color = Color(1, 1, 0)  # Yellow
-	#else:
-		#stylebox.bg_color = Color(1, 0, 0)  # Red
+	var health_percentage = value / max_value
 	
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = Color.GREEN  # Default Colour
+	
+	## Dynamically Change Health Bar Colour based on health percentage
+	if health_percentage > 0.60:
+		style_box.bg_color = Color.GREEN  # Green
+	elif health_percentage <= 0.60 and health_percentage > 0.30:
+		style_box.bg_color = Color.ORANGE  # Yellow
+	else:
+		style_box.bg_color = Color.RED  # Red
+	
+	add_theme_stylebox_override("fill", style_box)  # Applies Colour override
+	
+	# Gradually have the Health Bar fade away
 	if fade > 0:	
 		fade -= delta
 		#self_modulate = Color(1,1,1,fade)
@@ -66,7 +74,7 @@ func _process(delta):
 func set_health(new_health):
 	var prev_health = current_health
 	
-	current_health = clamp(new_health, 0, max_health)
+	current_health = clamp(new_health, 0, max_health)  # Ensures Health does not go over max health or under 0
 	
 	value = current_health  # Update the Health Bar value
 	self.modulate = Color(1,1,1,1)  # Reset the Health Bar to be visible if fade was enabled
@@ -100,19 +108,20 @@ func set_max_health(new_health):
 func _on_player_health_changed(value: Variant) -> void:
 	set_health(value)
 
-
+## Handles Signal Emitted from Enemy
 func _on_enemy_health_changed(value: Variant) -> void:
 	set_health(value)
 
+## Handles Signal Emitted from Boss
 func _on_boss_health_changed(value: Variant) -> void:
 	set_health(value)
 
-
+## Updates the damage bar after timer runs out
 func _on_damage_timer_timeout() -> void:
 	damage_bar.value = current_health
 	bar_timer.start()
 
-
+## Handles Health Bar Fade Timer
 func _on_bar_timer_timeout() -> void:
 	#visible = false
 	if enable_fade:

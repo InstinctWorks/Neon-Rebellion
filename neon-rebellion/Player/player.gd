@@ -3,12 +3,14 @@ extends CharacterBody2D
 ## Player
 
 ## onready variables
-@onready var health_UI = $healthUI
+#@onready var health_UI = $healthUI
 @onready var health_bar = $Health_Bar
 @onready var kill_counter = $Camera2D/Game_UI/Label  # Temporary Label
 @onready var xp_counter = $Camera2D/Game_UI/Label2  # Temporary Label 
 @onready var game_ui: Control = $Camera2D/Game_UI
 @onready var i_frames: Timer = $"I-Frames"
+@onready var animationPlayer = $AnimationPlayer  
+@onready var animatedSprite = $AnimatedSprite2D
 
 ## Constant Variables
 
@@ -29,7 +31,10 @@ signal health_changed(value)
 signal player_died()
 
 # Variables
-var sprite  # Sprite Reference
+#var sprite  # Sprite Reference
+#var Idle_Sprite
+#var Run_Sprite
+#var current_sprite
 
 var max_hp = 100  # Max Health
 var current_hp = max_hp  # Set the Player Current Health
@@ -41,8 +46,8 @@ var kills = 0  #
 
 
 var attack_timer = 0.0  # Attack Timer to control the Player Auto Attacks
-var flash_timer = 0.0  # Timer for Flashes
-var damage_timer = 0.0 # Timer for damage indicator
+var flash_timer = FLASH_INTERVAL  # Timer for Flashes
+var damage_timer = DAMAGE_DURATION # Timer for damage indicator
 var invincible_timer = 0
 
 var xp = 0  # XP Counter
@@ -57,21 +62,24 @@ var paused = false  # Flag Check if the game is paused for any reasons (Implemen
 
 func _ready():
 	health_bar.enable_fade = false
-	health_UI.set_max_health(max_hp)  # Set Player Max HP in health UI
+	#health_UI.set_max_health(max_hp)  # Set Player Max HP in health UI
 	health_bar.set_max_health(max_hp)  # Set Player Max HP in health bar
 	#health_bar.init_health(max_hp)
 	health_bar.bar_timer.start()
 	
-	sprite = get_node("Sprite2D")  # Intialize the Player Sprite
+	#sprite = get_node("Sprite2D")  # Intialize the Player Sprite
+	#Idle_Sprite = get_node("IdleSprite")
+	#Run_Sprite = get_node("RunSprite")
+	#current_sprite = Idle_Sprite
 	
-	taking_damage = true
+	#taking_damage = true
 	
 	add_to_group("Player")  # Add Player to a group
 
 
 ## Update the Player Visibility - Antoine
-func update_player_visibility():
-	sprite.visible = sprite.visible
+#func update_player_visibility():
+	#sprite.visible = sprite.visible
 
 
 func _physics_process(delta):
@@ -86,9 +94,17 @@ func _physics_process(delta):
 		input_vector = input_vector.normalized()
 		
 		if input_vector != Vector2.ZERO:
+			#animationPlayer.play("Run")
+			if !taking_damage:
+				animatedSprite.play("Run")
+			
 			velocity = input_vector * speed
 			#velocity = velocity.move_toward(input_vector * speed, ACCELERATION * delta)
 		else:
+			#animationPlayer.play("Idle")
+			if !taking_damage:
+				animatedSprite.play("Idle")
+			
 			velocity = Vector2.ZERO
 		
 		#print("Player Velocity: ", velocity)
@@ -114,68 +130,48 @@ func _physics_process(delta):
 			if flash_timer <= 0:
 				#print("Taking Damage")
 				flash_timer = FLASH_INTERVAL  # Reset the flash timer
-				sprite.visible = !sprite.visible  # Flip the Visibility (true/false)
-				update_player_visibility()  # Update the Player Sprite Visibility
+				#sprite.visible = !sprite.visible  # Flip the Visibility (true/false)
+				#update_player_visibility()  # Update the Player Sprite Visibility
+				#current_sprite.visible = !current_sprite.visible
+				animatedSprite.play("Hurt")
+				animatedSprite.visible = !animatedSprite.visible
 			
 			if damage_timer <= 0:
 				taking_damage = false
 				invincible = false
-				sprite.visible = true  # Set the Player visibility to true
+				animatedSprite.visible = true
+				#sprite.visible = true  # Set the Player visibility to true
 				#health_bar.bar_timer.start()
-				update_player_visibility()  # Update the Player to be visible
+				#update_player_visibility()  # Update the Player to be visible
+				#current_sprite.visible = true
 		
 		## Flip Sprite Horizontally to face left/right
-		sprite.flip_h = velocity.x < 0
+		#animatedSprite.flip_h = velocity.x < 0
+		
+		if velocity.x < 0:
+			animatedSprite.flip_h = true
+		elif velocity.x > 0:
+			animatedSprite.flip_h = false
 		
 		move_and_collide(velocity * delta)
 		
 		#move_and_slide()
 
-##
-func collect(item: String):
-	var world = get_tree().get_root().get_node("/root/World")
-	
-	if item == "xp":
-		var xp_drop = preload("res://Collectibles/xp.tscn").instantiate()
-		
-		xp += xp_drop.xp
-		
-		xp_counter.text = "XP = " + str(xp)
-		
-		game_ui.update_xp(xp_drop.xp)
-		#print("XP Collected: XP Level = ", xp)
-	elif item == "nuke":
-		var enemies = get_tree().get_nodes_in_group("Enemy")
-		
-		for enemy in enemies:
-			if enemy.has_method("die") and !enemy.boss:
-				enemy.die()  # Destroy all enemies by removing them from the scene
-		world.current_enemies = 0  # Reset current enemies count in world script
-		print("All enemies destroyed!")
-	elif item == "healing":
-		if current_hp < max_hp:
-			#current_hp = clamp(current_hp, 0, max_hp)
-			current_hp += round(max_hp * 0.25)
-			#var potential_hp = current_hp + round(max_hp * 0.25)
-			current_hp = clamp(current_hp, 0, max_hp)
-			health_changed.emit(current_hp)
-			print("Player Healed: ", current_hp)
-	
-	world.current_items -= 1
+## Handles the collecting of items
 
-#func collect(item: Object):
+#func collect(item: String):
 	#var world = get_tree().get_root().get_node("/root/World")
 	#
-	#if item.name == "xp":
+	#if item == "xp":
 		#var xp_drop = preload("res://Collectibles/xp.tscn").instantiate()
 		#
 		#xp += xp_drop.xp
 		#
 		#xp_counter.text = "XP = " + str(xp)
 		#
-		#game_ui.update_xp(item.xp)
+		#game_ui.update_xp(xp_drop.xp)
 		##print("XP Collected: XP Level = ", xp)
-	#elif item.name == "nuke":
+	#elif item == "nuke":
 		#var enemies = get_tree().get_nodes_in_group("Enemy")
 		#
 		#for enemy in enemies:
@@ -183,7 +179,7 @@ func collect(item: String):
 				#enemy.die()  # Destroy all enemies by removing them from the scene
 		#world.current_enemies = 0  # Reset current enemies count in world script
 		#print("All enemies destroyed!")
-	#elif  item.name == "heal":
+	#elif item == "healing":
 		#if current_hp < max_hp:
 			##current_hp = clamp(current_hp, 0, max_hp)
 			#current_hp += round(max_hp * 0.25)
@@ -193,6 +189,39 @@ func collect(item: String):
 			#print("Player Healed: ", current_hp)
 	#
 	#world.current_items -= 1
+
+func collect(item: Object):
+	var world = get_tree().get_root().get_node("/root/World")
+	
+	print("Player Collected: ", item.name)
+	
+	if item.is_in_group("xp"):
+		var xp_drop = preload("res://Collectibles/xp.tscn").instantiate()
+		
+		xp += xp_drop.xp
+		
+		#xp_counter.text = "XP = " + str(xp)
+		
+		game_ui.update_xp(item.xp)
+		#print("XP Collected: XP Level = ", xp)
+	elif item.is_in_group("nuke"):
+		var enemies = get_tree().get_nodes_in_group("Enemy")
+		
+		for enemy in enemies:
+			if enemy.has_method("die") and !enemy.boss:
+				enemy.die()  # Destroy all enemies by removing them from the scene
+		world.current_enemies = 0  # Reset current enemies count in world script
+		print("All enemies destroyed!")
+	elif  item.is_in_group("heal"):
+		if current_hp < max_hp:
+			#current_hp = clamp(current_hp, 0, max_hp)
+			current_hp += round(max_hp * 0.25)
+			#var potential_hp = current_hp + round(max_hp * 0.25)
+			current_hp = clamp(current_hp, 0, max_hp)
+			health_changed.emit(current_hp)
+			print("Player Healed: ", current_hp)
+	
+	world.current_items -= 1
 
 ##
 func find_nearest_enemy():
@@ -213,7 +242,7 @@ func attack():
 	
 	var nearest_enemy = find_nearest_enemy()
 	
-	if nearest_enemy:
+	if nearest_enemy and nearest_enemy.is_alive:
 		var direcction = (nearest_enemy.global_position - global_position).normalized()
 		
 		var bullet = projectile.instantiate()
@@ -281,7 +310,7 @@ func take_damage(dmg: int, source: Node):
 		invincible = true
 		i_frames.start()
 	
-	print("Player Current Health: ", current_hp, "/", max_hp)
+	#print("Player Current Health: ", current_hp, "/", max_hp)
 	
 	if current_hp <= 0:
 		print("Player has Died")
@@ -291,10 +320,14 @@ func take_damage(dmg: int, source: Node):
 func upgrade(upgrade: String):
 	
 	if upgrade == "hp":
-		max_hp += 25
+		max_hp *= 1.25
+		current_hp += round(max_hp * 0.25)
+		current_hp = clamp(current_hp, 0, max_hp)
+		
 		health_bar.set_max_health(max_hp)
+		health_changed.emit(current_hp)
 	elif upgrade == "speed":
-		speed += 25
+		speed *= 1.25
 	elif upgrade == "dmg":
 		dmg_multipler += 0.15
 		dmg = base_dmg * dmg_multipler
@@ -302,8 +335,12 @@ func upgrade(upgrade: String):
 
 func die():
 	is_alive = false
-	visible = false
-	update_player_visibility()
+	#visible = false
+	#update_player_visibility()
+	set_physics_process(false)
+	animatedSprite.play("Death")
+	
+	await get_tree().create_timer(2.5).timeout
 	
 	player_died.emit()
 	#get_tree().reload_current_scene()

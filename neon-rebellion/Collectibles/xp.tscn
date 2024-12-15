@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bb6sufdcohuy5"]
 
 [ext_resource type="Script" path="res://Collectibles/xp.gd" id="1_gpdu7"]
-[ext_resource type="Texture2D" uid="uid://bcclx00cfvqdl" path="res://Assets/visible.png" id="1_kbfe4"]
+[ext_resource type="Texture2D" uid="uid://bua6k2qfd8hh2" path="res://Assets/Sand_Colour.PNG" id="2_qwmw0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3s7bw"]
 
@@ -10,12 +10,14 @@ z_index = -1
 collision_mask = 3
 script = ExtResource("1_gpdu7")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("1_kbfe4")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1.75, 1.75)
+modulate = Color(1, 1, 1, 0.529412)
+scale = Vector2(2.25, 2.25)
 shape = SubResource("RectangleShape2D_3s7bw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 0, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("2_qwmw0")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -6,7 +6,7 @@ extends CharacterBody2D
 
 ## Onready Variables
 @onready var health_bar = $CanvasLayer/Health_Bar
-
+@onready var animatedSprite = $AnimatedSprite2D
 
 ## Constant Variables
 
@@ -16,10 +16,11 @@ const drag_speed = 100.0
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 const DAMAGE_DURATION = 1.0  # Damage Duration for flashes
 const target = "Player"
-const dmg = 10
+
 
 ## References
-const xp = preload("res://Collectibles/xp.tscn")
+var xp = preload("res://Collectibles/xp.tscn")
+var hp = preload("res://Collectibles/healing.tscn")
 var world = preload("res://Scenes/World/world.tscn")
 
 ## Signals
@@ -31,6 +32,7 @@ var max_hp = 1000
 var current_hp = max_hp
 var base_speed = 150
 var speed = base_speed
+var dmg = 10
 
 var flash_timer = 0.0  # Timer for Flashes
 var damage_timer = 0.0 # Timer for damage indicator
@@ -47,6 +49,7 @@ var sprite
 var direction  # Check where the player is
 
 var boss = true  # Flag Check for Boss
+var charging = false  # Flag Check for Boss Charge Attack
 
 func _ready():
 	health_bar.enable_fade = false
@@ -58,68 +61,75 @@ func _ready():
 	add_to_group("Enemy")
 	$Hurtbox.add_to_group("Enemy")
 
-func update_enemy_visibility():
-	sprite.visible = visible
+#func update_enemy_visibility():
+	#sprite.visible = visible
 
 func _physics_process(delta):
 	
 	if !player.is_alive:
 		return
+	
+	if is_alive:
+		## Determine the direction the enemy will be facing (Left/Right)  
+		direction = (player.global_position - global_position).normalized()
 		
-	## Determine the direction the enemy will be facing (Left/Right)  
-	direction = (player.global_position - global_position).normalized()
-	
-	## Calculate distance to the player  
-	var distance_to_player = position.distance_to(player.position)
-	
-	## Calculate the height distance to the player
-	#var height_distance = abs(player.global_position.y - global_position.y)
-	
-	#position += (player.position - position) / drag_speed  # Move towards the player
-	
-	var velocity = direction * speed
-	
-	#print("Direction to Player: ", direction)
-	
-	#velocity = (player.global_position - global_position).normalized() * speed
-	
-	## Flip Sprite Horizontally to face left/right
-	sprite.flip_h = direction.x < 0
-	
-	#print(velocity)
-	
-	#var collision = move_and_collide(velocity * delta)
-	#
-	#if collision:
-		#var collided_object = collision.get_collider()
-		##print("Collision Detected with: ", collided_object)
+		## Calculate distance to the player  
+		var distance_to_player = position.distance_to(player.position)
+		
+		## Calculate the height distance to the player
+		#var height_distance = abs(player.global_position.y - global_position.y)
+		
+		#position += (player.position - position) / drag_speed  # Move towards the player
+		
+		if !(charging):
+			animatedSprite.play("Walk")
+		
+		
+		var velocity = direction * speed
+		
+		#print("Direction to Player: ", direction)
+		
+		#velocity = (player.global_position - global_position).normalized() * speed
+		
+		
+		
+		## Flip Sprite Horizontally to face left/right
+		animatedSprite.flip_h = direction.x < 0
+		
+		#print(velocity)
+		
+		#var collision = move_and_collide(velocity * delta)
 		#
-		#if collided_object.name == "Player":
-			#collided_object.take_damage(dmg)
-	
-	## Handles Damaage Indicator when Player takes damage
-	if taking_damage:
-		damage_timer -= delta
-		flash_timer -= delta  # Reduce the Flash Timer
-		health_bar.visible = true
-		#health_bar.self_modulate = Color(1,1,1,1)
-		#health_bar.damage_bar.self_modulate = Color(1,1,1,1)
-		#health_bar.modulate = Color(1,1,1,1)
-		## Flash the Player when taking damage (Toggle Visibility On/Off)
-		if flash_timer <= 0:
-			#print("Taking Damage")
-			flash_timer = FLASH_INTERVAL
-			visible = !visible  # Flip the Visibility (true/false)
-			update_enemy_visibility()  # Update the Enemy Sprite Visibility
+		#if collision:
+			#var collided_object = collision.get_collider()
+			##print("Collision Detected with: ", collided_object)
+			#
+			#if collided_object.name == "Player":
+				#collided_object.take_damage(dmg)
 		
-		if damage_timer <= 0:
-			taking_damage = false
-			visible = true  # Set the Enemy visibility to true
-			health_bar.bar_timer.start()
-			update_enemy_visibility()  # Update the Enemy to be visible
-			print("Enemy: Damage Timer ran out")
-	
-	move_and_collide(velocity * delta)
+		## Handles Damaage Indicator when Player takes damage
+		if taking_damage:
+			damage_timer -= delta
+			flash_timer -= delta  # Reduce the Flash Timer
+			health_bar.visible = true
+			#health_bar.self_modulate = Color(1,1,1,1)
+			#health_bar.damage_bar.self_modulate = Color(1,1,1,1)
+			#health_bar.modulate = Color(1,1,1,1)
+			## Flash the Player when taking damage (Toggle Visibility On/Off)
+			if flash_timer <= 0:
+				#print("Taking Damage")
+				flash_timer = FLASH_INTERVAL
+				visible = !visible  # Flip the Visibility (true/false)
+				#update_enemy_visibility()  # Update the Enemy Sprite Visibility
+			
+			if damage_timer <= 0:
+				taking_damage = false
+				visible = true  # Set the Enemy visibility to true
+				health_bar.bar_timer.start()
+				#update_enemy_visibility()  # Update the Enemy to be visible
+				#print("Enemy: Damage Timer ran out")
+		
+		move_and_collide(velocity * delta)
 	#move_and_slide()
 
 ## Call to check its the Boss
@@ -131,9 +141,9 @@ func take_damage(dmg):
 	current_hp -= dmg
 	health_changed.emit(current_hp)
 	
-	health_bar.enable_fade = false  # Disable Health Bar Fading for Boss
+	#health_bar.enable_fade = false  # Disable Health Bar Fading for Boss
 	
-	print("Boss Current Health: ", current_hp)
+	#print("Boss Current Health: ", current_hp)
 	
 	taking_damage = true
 	damage_timer = DAMAGE_DURATION
@@ -145,10 +155,16 @@ func take_damage(dmg):
 ## Handles Enemy death
 func die():
 	var xp_drop = xp.instantiate()
-	xp_drop.position = global_position
+	var hp_drop = hp.instantiate()
+	
+	xp_drop.position = Vector2(global_position.x - 25, global_position.y)
 	xp_drop.update_xp(50)
+	xp_drop.modulate = Color.ORANGE
+	
+	hp_drop.position = Vector2(global_position.x + 25, global_position.y)
 	#print("Boss: XP Drop Value = ", xp_drop.xp)
 	
+	is_alive = false
 	emit_signal("boss_died")  # Emit Signal when enemy dies
 	
 	#player.kills += 1
@@ -157,7 +173,17 @@ func die():
 	#print("Current Enemies: ", world.current_enemies)
 	#world.current_enemies -= 1
 	
+	#set_physics_process(false)
+	var death_length = animatedSprite.sprite_frames.get_frame_count("Death") / animatedSprite.sprite_frames.get_animation_speed("Death")
+	#print("Boss: Death Length = ", death_length)
+	
+	visible = true
+	animatedSprite.play("Death")
+	
+	await get_tree().create_timer(death_length + 0.5).timeout  # Waits until Death animation to finish before proceeding 
+	
 	get_tree().root.add_child(xp_drop)
+	get_tree().root.add_child(hp_drop)
 	
 	queue_free()
 
@@ -180,16 +206,27 @@ func _on_hitbox_area_exited(area: Area2D) -> void:
 
 ## Applies Damage each time the timer runs out
 func _on_damage_timer_timeout() -> void:
-	if player:
+	if player and is_alive:
 		player.take_damage(dmg, self)
 
 ## Increase Boss speed for charge attack
 func _on_charge_cooldown_timeout() -> void:
-	speed = 600
-	$Charge_Timer.start()
-	print("Boss is charging! (Speed): ", speed)
+	speed = 0  # Stop the Boss for a moment
+	charging = true
+	
+	animatedSprite.play("Charge")  
+	await get_tree().create_timer(1).timeout  # Wait until Charge Animation finish before charging
+	
+	if charging and is_alive:
+		charging = false
+		speed = base_speed * 5  # Charge speed is 5x based speed
+		$Charge_Timer.start()
+		print("Boss is charging! (Speed): ", speed)
 
 ## Reverts Boss speed to normal
 func _on_charge_timer_timeout() -> void:
 	speed = base_speed
+	charging = false
+	$Charge_Cooldown.start()
+	
 	print("Boss is cooling down! (Speed): ", speed)
