@@ -51,6 +51,9 @@ var paused = false  # Flag Check if the game if paused
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#BackgroundMusic.fade_in(3.0)  # Fade in music over 3 seconds
+	BackgroundMusic.play()  
+	
 	randomize()  
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
@@ -60,6 +63,7 @@ func _process(delta: float) -> void:
 
 ## Handles Showing/Hiding the Pause Menu
 func pause_Menu():
+	
 	## If paused (true) stop the game, show the pause menu
 	if paused:
 		pause_menu.hide()
@@ -80,11 +84,25 @@ func pause_Menu():
 ## Reset and Clean the World
 func restart_game():
 	print("World: Restarting Game")
+	
+	# 
+	#BackgroundMusic.reset_music()
+	#BackgroundMusic.fade_in(1.5)  # Fade in music over 3 seconds
+	#BackgroundMusic.play()  
+	
+	#
 	var items = get_tree().get_nodes_in_group("Collectibles")
 	for item in items:
 		#if item.is_in_group("Collectibles"):
 		#print("World: Child = ", child.get_groups())
 		item.queue_free()
+	
+	
+	if BackgroundMusic.is_playing():
+		BackgroundMusic.stop()
+	
+	BackgroundMusic.fade_in(1.5)
+	BackgroundMusic.play()
 
 ## Handles Enemy Spawning along the outside of the PLayer's Camera View
 func _on_enemy_timer_timeout():
@@ -100,7 +118,7 @@ func _on_enemy_timer_timeout():
 	#var enemy = ENEMY.instantiate()
 	
 	var enemy_type = randi_range(0, enemy_list.size() - 1)  # Randomly choice what Enemy from Enemy array
-	var enemy = enemy_list[enemy_type].instantiate()
+	var enemy = enemy_list[enemy_type].instantiate()  
 	
 	enemy.global_position = $Player/Path2D/PathFollow2D/Marker2D.global_position
 	#print("Enemy spawned at: ", enemy.global_position)

@@ -212,7 +212,7 @@ func collect(item: Object):
 				enemy.die()  # Destroy all enemies by removing them from the scene
 		world.current_enemies = 0  # Reset current enemies count in world script
 		print("All enemies destroyed!")
-	elif  item.is_in_group("heal"):
+	elif  item.is_in_group("healing"):
 		if current_hp < max_hp:
 			#current_hp = clamp(current_hp, 0, max_hp)
 			current_hp += round(max_hp * 0.25)
@@ -338,6 +338,9 @@ func die():
 	#visible = false
 	#update_player_visibility()
 	set_physics_process(false)
+	
+	BackgroundMusic.fade_out_and_stop(2.0)  # Fades out over 2 seconds, then stops
+
 	animatedSprite.play("Death")
 	
 	await get_tree().create_timer(2.5).timeout

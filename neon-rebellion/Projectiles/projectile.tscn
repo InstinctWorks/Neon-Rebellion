@@ -38,7 +38,7 @@ position = Vector2(-8, 4)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_rnyrf")
 autoplay = "default"
-frame_progress = 0.211489
+frame_progress = 0.808531
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false

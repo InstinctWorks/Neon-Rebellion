@@ -151,6 +151,10 @@ func take_damage(dmg):
 
 ## Handles Enemy death
 func die():
+	
+	if !is_alive:
+		return
+	
 	var xp_drop = xp.instantiate()
 	xp_drop.position = global_position
 	xp_drop.update_xp(5)

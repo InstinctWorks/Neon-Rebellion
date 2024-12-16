@@ -14,4 +14,6 @@ func _on_main_menu_pressed() -> void:
 	world.restart_game()
 	
 	player.set_physics_process(true)
+	Engine.time_scale = 1
+	
 	get_tree().change_scene_to_file("res://Scenes/Main Menu/main_menu.tscn")

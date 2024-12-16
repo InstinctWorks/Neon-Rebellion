@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://r4pix02nvqyf"]
+
+[ext_resource type="AudioStream" uid="uid://dlj20q6oi3gh1" path="res://Assets/Music/cyberpunk-street.ogg" id="1_t8e5t"]
+[ext_resource type="Script" path="res://Scenes/Music/background_music.gd" id="2_buw6y"]
+
+[node name="Background_Music" type="AudioStreamPlayer"]
+stream = ExtResource("1_t8e5t")
+parameters/looping = true
+script = ExtResource("2_buw6y")

@@ -1,6 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://bu0335sssxmmy"]
+[gd_scene load_steps=13 format=3 uid="uid://bu0335sssxmmy"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_ns6ep"]
+[ext_resource type="Texture2D" uid="uid://c0hp7gt6l6kaf" path="res://Assets/CityLayers/foreground.png" id="2_pjwn8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jgl6"]
+bg_color = Color(0, 0, 0, 1)
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqqlb"]
+bg_color = Color(0.291018, 0.721412, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwdqa"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65obq"]
+bg_color = Color(0.111197, 0.111197, 0.111197, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddufj"]
+bg_color = Color(0.660743, 0.339418, 0.120382, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11yem"]
+bg_color = Color(0.158472, 0.158472, 0.158472, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7umsi"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7sydn"]
+bg_color = Color(0.443035, 0.0469271, 7.21961e-08, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8l2ne"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osy67"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
 
 [node name="Main_Menu" type="Control"]
 layout_mode = 3
@@ -13,6 +48,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ns6ep")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(6, 14)
+scale = Vector2(5, 5)
+texture = ExtResource("2_pjwn8")
+
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -20,13 +60,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -309.0
-offset_top = -225.0
-offset_right = 309.0
-offset_bottom = -110.0
+offset_left = -290.0
+offset_top = -275.0
+offset_right = 328.0
+offset_bottom = -160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 84
+theme_override_styles/normal = SubResource("StyleBoxFlat_5jgl6")
 text = "Neon Rebellion"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -39,13 +80,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -38.0
-offset_right = 100.0
-offset_bottom = 4.0
+offset_left = -179.0
+offset_top = -100.0
+offset_right = 21.0
+offset_bottom = -58.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 1.996)
 theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxFlat_xqqlb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qwdqa")
+theme_override_styles/normal = SubResource("StyleBoxFlat_65obq")
 text = "Start"
 
 [node name="Options" type="Button" parent="."]
@@ -56,13 +101,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = 27.0
-offset_right = 100.0
-offset_bottom = 69.0
+offset_left = -179.0
+offset_top = 25.0
+offset_right = 21.0
+offset_bottom = 67.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 1.996)
 theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxFlat_ddufj")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_11yem")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7umsi")
 text = "Options"
 
 [node name="Quit" type="Button" parent="."]
@@ -73,13 +122,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = 94.0
-offset_right = 100.0
-offset_bottom = 136.0
+offset_left = -179.0
+offset_top = 150.0
+offset_right = 21.0
+offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 1.996)
 theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxFlat_7sydn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_8l2ne")
+theme_override_styles/normal = SubResource("StyleBoxFlat_osy67")
 text = "Quit"
 
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]

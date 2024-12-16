@@ -22,6 +22,11 @@ run/layer_1=""
 [autoload]
 
 Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
+BackgroundMusic="*res://Scenes/Music/background_music.tscn"
+
+[editor]
+
+version_control/autoload_on_startup=true
 
 [editor_plugins]
 
