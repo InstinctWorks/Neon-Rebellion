@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cin2cl0ywgivf"
+path="res://.godot/imported/08 Novum -Long Version- - Copy.ogg-d60200a7f970358ef2f8ac6f7ec41558.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Music/08 Novum -Long Version- - Copy.ogg"
+dest_files=["res://.godot/imported/08 Novum -Long Version- - Copy.ogg-d60200a7f970358ef2f8ac6f7ec41558.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

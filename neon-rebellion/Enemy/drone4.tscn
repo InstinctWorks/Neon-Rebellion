@@ -1,0 +1,108 @@
+[gd_scene load_steps=14 format=3 uid="uid://bgjye138gy4m8"]
+
+[ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_022ub"]
+[ext_resource type="PackedScene" uid="uid://c0aspn5wgta5l" path="res://Overlay/hurtbox.tscn" id="3_c824c"]
+[ext_resource type="PackedScene" uid="uid://bwwrf067o0ey0" path="res://Overlay/hitbox.tscn" id="4_mfw3m"]
+[ext_resource type="PackedScene" uid="uid://b38fppq6abm6d" path="res://UI/health_bar.tscn" id="5_1gbyh"]
+[ext_resource type="Texture2D" uid="uid://b2bddcglksshu" path="res://Assets/Drone2/1 Drones/6/Walk2.png" id="5_7sxec"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ohq"]
+atlas = ExtResource("5_7sxec")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kv0ae"]
+atlas = ExtResource("5_7sxec")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt7sb"]
+atlas = ExtResource("5_7sxec")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ltjo"]
+atlas = ExtResource("5_7sxec")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n1jwm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ohq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kv0ae")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pt7sb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ltjo")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1kqf"]
+radius = 11.5
+height = 33.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pcplo"]
+size = Vector2(21.3333, 21.3333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1kfkh"]
+
+[node name="Enemy" type="CharacterBody2D"]
+z_index = -2
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("1_022ub")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_n1jwm")
+animation = &"Walk"
+frame_progress = 0.693137
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+modulate = Color(1, 1, 1, 0.619608)
+position = Vector2(0, 3)
+rotation = 1.5708
+scale = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_j1kqf")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_c824c")]
+modulate = Color(1, 1, 1, 0.647059)
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(0, 1)
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_pcplo")
+
+[node name="Hitbox" parent="." instance=ExtResource("4_mfw3m")]
+modulate = Color(1, 1, 1, 0.584314)
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_1kfkh")
+
+[node name="Damage_Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="Health_Bar" parent="." instance=ExtResource("5_1gbyh")]
+offset_left = 67.0
+offset_top = -65.0
+offset_right = 71.0
+offset_bottom = -38.0
+
+[connection signal="health_changed" from="." to="Health_Bar" method="_on_enemy_health_changed"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]
+[connection signal="timeout" from="Damage_Timer" to="." method="_on_damage_timer_timeout"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ck6mqkq5pwsep"
+path="res://.godot/imported/DavidKBD - Electric Pulse - 01 - Electric Pulse-full.ogg-778ea37d79e1b638665ce843d183eeb7.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Music/DavidKBD - Electric Pulse - 01 - Electric Pulse-full.ogg"
+dest_files=["res://.godot/imported/DavidKBD - Electric Pulse - 01 - Electric Pulse-full.ogg-778ea37d79e1b638665ce843d183eeb7.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

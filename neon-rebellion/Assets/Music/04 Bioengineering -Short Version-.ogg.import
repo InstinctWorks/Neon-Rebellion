@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cy0gexenap033"
+path="res://.godot/imported/04 Bioengineering -Short Version-.ogg-742e5242c11be91c53b719cf4309790e.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Music/04 Bioengineering -Short Version-.ogg"
+dest_files=["res://.godot/imported/04 Bioengineering -Short Version-.ogg-742e5242c11be91c53b719cf4309790e.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

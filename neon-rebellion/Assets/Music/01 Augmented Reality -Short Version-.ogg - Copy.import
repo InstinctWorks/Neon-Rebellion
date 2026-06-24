@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ec3siy1s1xc1"
+path="res://.godot/imported/01 Augmented Reality -Short Version-.ogg-2abff0106e3d19cd2548e32096184165.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/01 Augmented Reality -Short Version-.ogg"
+dest_files=["res://.godot/imported/01 Augmented Reality -Short Version-.ogg-2abff0106e3d19cd2548e32096184165.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

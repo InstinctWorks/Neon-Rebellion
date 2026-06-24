@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dxevmkar60des"
+path="res://.godot/imported/03 Novum -Short Version-.ogg-2919ec2a89c925892ae8e71e581b8660.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/03 Novum -Short Version-.ogg"
+dest_files=["res://.godot/imported/03 Novum -Short Version-.ogg-2919ec2a89c925892ae8e71e581b8660.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

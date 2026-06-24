@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dh51b6ftw5sjf"
+path="res://.godot/imported/DavidKBD - Electric Pulse - 09 - Vapor Trails Pursuit-short.ogg-6cf0f601b7279215e4347d7103e05737.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Music/DavidKBD - Electric Pulse - 09 - Vapor Trails Pursuit-short.ogg"
+dest_files=["res://.godot/imported/DavidKBD - Electric Pulse - 09 - Vapor Trails Pursuit-short.ogg-6cf0f601b7279215e4347d7103e05737.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

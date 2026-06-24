@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bvx611q7dpnhm"
+path="res://.godot/imported/05 Retrocausality -Short Version-.ogg-ff53c4ef13c426d770df0dc201fd9800.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Music/05 Retrocausality -Short Version-.ogg"
+dest_files=["res://.godot/imported/05 Retrocausality -Short Version-.ogg-ff53c4ef13c426d770df0dc201fd9800.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
