@@ -8,7 +8,6 @@
 scale = Vector2(10, 10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_8dudh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

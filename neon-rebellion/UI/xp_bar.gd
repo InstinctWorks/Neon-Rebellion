@@ -5,7 +5,7 @@ extends ProgressBar
 ## Signals
 signal level_up  
 
-var max_xp = 10  
+var max_xp = 100  
 var current_xp = 0  
 
 # Called when the node enters the scene tree for the first time.
@@ -33,4 +33,4 @@ func add_xp(amount: int) -> void:
 	
 	value = current_xp
 	
-	print("XP Bar: XP Collected = ", current_xp)
+	#print("XP Bar: XP Collected = ", current_xp, "/", max_xp)

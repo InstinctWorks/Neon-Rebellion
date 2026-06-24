@@ -2,8 +2,6 @@ extends CharacterBody2D
 
 ## Enemy (Melee)
 
-
-
 ## Onready Variables
 @onready var health_bar = $CanvasLayer/Health_Bar
 @onready var animatedSprite = $AnimatedSprite2D
@@ -195,7 +193,7 @@ func die():
 
 ## Start Damage Timer if the Player enters
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	print("Hitbox Area Entered: ", area.name)
+	#print("Hitbox Area Entered: ", area.name)
 	if area.name == "Hurtbox" and area.get_parent().name == "Player":
 		$Damage_Timer.start()
 

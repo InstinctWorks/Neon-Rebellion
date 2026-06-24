@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://chdjgmvub7stb"]
 
-[ext_resource type="Texture2D" uid="uid://bt8kggc203fir" path="res://Assets/1.png" id="1_ff3k5"]
 [ext_resource type="PackedScene" uid="uid://cjnefjumcefcu" path="res://Player/player.tscn" id="1_lgygn"]
 [ext_resource type="Script" path="res://Scenes/World/world.gd" id="1_rnxtr"]
+[ext_resource type="Texture2D" uid="uid://djbqph2epsupq" path="res://Assets/images/purple/terminal.png" id="2_j7g6l"]
 [ext_resource type="PackedScene" uid="uid://d2wj5y471i4jt" path="res://UI/game_UI.tscn" id="5_23x0k"]
 [ext_resource type="PackedScene" uid="uid://b4fq5x2pvx8mp" path="res://Scenes/Game Over/game_over.tscn" id="6_tv0oo"]
 [ext_resource type="PackedScene" uid="uid://i4m1b0ft4kvx" path="res://Scenes/World/wall.tscn" id="7_74t8t"]
@@ -16,31 +16,31 @@ script = ExtResource("1_rnxtr")
 scale = Vector2(2, 2)
 
 [node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-scale = Vector2(6, 6)
-texture = ExtResource("1_ff3k5")
+scale = Vector2(9, 6)
+texture = ExtResource("2_j7g6l")
 
 [node name="Walls" type="Node" parent="."]
 
-[node name="Left_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+[node name="Left_Map_Wall" parent="Walls" groups=["Map_Wall"] instance=ExtResource("7_74t8t")]
 position = Vector2(-3536, -25)
 scale = Vector2(10, 250)
 
-[node name="Right_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+[node name="Right_Map_Wall" parent="Walls" groups=["Map_Wall"] instance=ExtResource("7_74t8t")]
 position = Vector2(3537, -25)
 scale = Vector2(10, 250)
 
-[node name="Top_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+[node name="Top_Map_Wall" parent="Walls" groups=["Map_Wall"] instance=ExtResource("7_74t8t")]
 position = Vector2(0, -2010)
 scale = Vector2(452, 10)
 
-[node name="Bottom_Map_Wall" parent="Walls" instance=ExtResource("7_74t8t")]
+[node name="Bottom_Map_Wall" parent="Walls" groups=["Map_Wall"] instance=ExtResource("7_74t8t")]
 position = Vector2(0, 2006)
 scale = Vector2(452, 10)
 
 [node name="Player" parent="." instance=ExtResource("1_lgygn")]
-ATTACK_INTERVAL = 0.75
 
 [node name="Enemy_Timer" type="Timer" parent="."]
+wait_time = 2.0
 autostart = true
 
 [node name="Item_Timer" type="Timer" parent="."]

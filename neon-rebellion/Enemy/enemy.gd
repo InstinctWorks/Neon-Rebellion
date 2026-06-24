@@ -14,7 +14,7 @@ const drag_speed = 100.0
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
 const DAMAGE_DURATION = 1.0  # Damage Duration for flashes
 const target = "Player"
-
+const ENEMY_MAX_SPEED = 2000
 
 ## References
 const xp = preload("res://Collectibles/xp.tscn")
@@ -31,6 +31,7 @@ var current_hp = max_hp
 var base_speed = 250.0
 var speed = base_speed
 var dmg = 3
+
 
 var flash_timer = 0.0  # Timer for Flashes
 var damage_timer = 0.0 # Timer for damage indicator
@@ -85,7 +86,7 @@ func _physics_process(delta):
 		var rng = RandomNumberGenerator.new()
 		rng.randomize()
 		
-		speed = randi_range(base_speed, base_speed + 25)
+		speed = randi_range(base_speed, base_speed)
 		#print("Enemy: Speed: ", speed)
 		
 		var velocity = direction * speed
@@ -174,8 +175,8 @@ func die():
 	
 	# Calculate Enemy Death animation length
 	var death_length = animatedSprite.sprite_frames.get_frame_count("Death") / animatedSprite.sprite_frames.get_animation_speed("Death")
-	print("Enemy: Death Length = %s / %s = %s" 
-	% [animatedSprite.sprite_frames.get_frame_count("Death"), animatedSprite.sprite_frames.get_animation_speed("Death"), death_length])
+	#print("Enemy: Death Length = %s / %s = %s" 
+	#% [animatedSprite.sprite_frames.get_frame_count("Death"), animatedSprite.sprite_frames.get_animation_speed("Death"), death_length])
 	
 	animatedSprite.visible = true
 	animatedSprite.play("Death")

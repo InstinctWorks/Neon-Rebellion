@@ -182,14 +182,17 @@ size = Vector2(21.3333, 21.3333)
 
 [node name="Enemy" type="CharacterBody2D"]
 z_index = -2
+scale = Vector2(1.15, 1.15)
 collision_layer = 8
 collision_mask = 8
 script = ExtResource("1_0wvta")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, 3)
 sprite_frames = SubResource("SpriteFrames_n1jwm")
-animation = &"Death"
+animation = &"Walk"
 autoplay = "Walk"
+frame_progress = 0.0916591
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color(1, 1, 1, 0.619608)

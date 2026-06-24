@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://cjnefjumcefcu"]
+[gd_scene load_steps=61 format=3 uid="uid://cjnefjumcefcu"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_7b0ek"]
 [ext_resource type="PackedScene" uid="uid://dnl53k0ipogch" path="res://Scenes/Pause Menu/pause_menu.tscn" id="3_7s2bv"]
@@ -367,6 +367,12 @@ _data = {
 }
 point_count = 5
 
+[sub_resource type="Curve2D" id="Curve2D_jfm63"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -945, -685, 0, 0, 0, 0, 972, -671, 0, 0, 0, 0, 993, 521, 0, 0, 0, 0, -943, 521, 0, 0, 0, 0, -945, -686)
+}
+point_count = 5
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 y_sort_enabled = true
@@ -378,6 +384,7 @@ position = Vector2(2.5, -20)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_naol8")
 animation = &"Run"
+frame_progress = 0.69028
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color(1, 1, 1, 0.427451)
@@ -424,15 +431,26 @@ position = Vector2(-0.5, 14)
 scale = Vector2(3, 3)
 shape = SubResource("RectangleShape2D_th24x")
 
-[node name="Path2D" type="Path2D" parent="."]
+[node name="Spawn" type="Node" parent="."]
+
+[node name="Path2D" type="Path2D" parent="Spawn"]
 curve = SubResource("Curve2D_tulkx")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(607.707, 851)
-rotation = 3.14159
-progress = 5414.3
+[node name="PathFollow2D" type="PathFollow2D" parent="Spawn/Path2D"]
+position = Vector2(-1440, -851)
 
-[node name="Marker2D" type="Marker2D" parent="Path2D/PathFollow2D"]
+[node name="Marker2D" type="Marker2D" parent="Spawn/Path2D/PathFollow2D"]
+
+[node name="Wall" type="Node" parent="."]
+
+[node name="Path2D" type="Path2D" parent="Wall"]
+curve = SubResource("Curve2D_jfm63")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Wall/Path2D"]
+position = Vector2(-945, -685)
+rotation = 0.00730295
+
+[node name="Marker2D" type="Marker2D" parent="Wall/Path2D/PathFollow2D"]
 
 [node name="Health_Bar" parent="." instance=ExtResource("6_c43u4")]
 offset_left = 85.0

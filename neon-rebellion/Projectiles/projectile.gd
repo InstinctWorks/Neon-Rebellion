@@ -7,13 +7,13 @@ const SPEED = 750
 const PROJECTILE_DISTANCE = 1
 var direction = Vector2.RIGHT  # Note: Fire Direction (Antoine)
 #var projectile_timer = PROJECTILE_DISTANCE
-var dmg = 10  # Added Constant for Damage Value
+var dmg = 10  # Added for Damage Value
 
 func _physics_process(delta):
 	#print("Projectile Direction: ", direction)
 	position += direction * SPEED * delta  # Changed so that projectile can be fired left/right (Antoine)
 
-
+## Handles enemy collision
 func _on_area_entered(area):
 	#print("Projectile is hitting area2d: ", area.name)
 	#print("Projectile area2d group: ", area.get_groups())
@@ -31,3 +31,8 @@ func _on_area_entered(area):
 	#if body.is_in_group("Enemy"):
 		#body.take_damage(dmg)
 		#queue_free()
+
+## Handles wall collision
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Walls") or body.is_in_group("Map_Wall"):
+		queue_free()

@@ -38,7 +38,7 @@ func update_kills() -> void:
 ## Update the XP Bar
 func update_xp(amount: int) -> void:
 	xp_bar.add_xp(amount)
-	print("Game UI: XP Received %s. XP Sent to XP Bar" % amount)
+	#print("Game UI: XP Received %s. XP Sent to XP Bar" % amount)
 
 func format_time(seconds) -> String:
 	var minutes = int(seconds) / 60

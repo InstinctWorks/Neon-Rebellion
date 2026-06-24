@@ -116,6 +116,7 @@ size = Vector2(20.6667, 14)
 
 [node name="Drone2" type="CharacterBody2D"]
 z_index = -2
+scale = Vector2(1.25, 1.25)
 collision_layer = 8
 collision_mask = 8
 script = ExtResource("1_keq8b")
@@ -125,6 +126,7 @@ scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_n1jwm")
 animation = &"Walk"
 autoplay = "Walk"
+frame_progress = 0.0380558
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color(1, 1, 1, 0.619608)

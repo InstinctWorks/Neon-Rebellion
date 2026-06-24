@@ -101,6 +101,7 @@ animations = [{
 
 [node name="Drone" type="CharacterBody2D"]
 z_index = -2
+scale = Vector2(1.25, 1.25)
 collision_layer = 8
 collision_mask = 8
 script = ExtResource("1_2w0mh")
@@ -145,6 +146,7 @@ scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_n1jwm")
 animation = &"Walk"
 autoplay = "Walk"
+frame_progress = 0.304409
 
 [connection signal="health_changed" from="." to="Health_Bar" method="_on_enemy_health_changed"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

@@ -19,9 +19,14 @@ extends CharacterBody2D
 
 const INVINCIBILITY_DURATION = 0.3  # Duration of Invinvibility period in seconds (Invincibility Frames)
 const FLASH_INTERVAL = 0.1  # Flash Interval in seconds (Damage Indicator)
-@export var ATTACK_INTERVAL = 0.25  # Attack Interval in seconds (Attack Cooldown)
+
 const DAMAGE_DURATION = 1.00  # Damage Duration for flashes
 @export var LAUNCH_OFFSET = 50  # Launch Offset position for projectiles
+const MAX_SPEED = 1500
+
+@export var ATTACK_INTERVAL = 1.0  # Attack Interval in seconds (Attack Cooldown)
+var MAX_ATTACKSPEED = 0.30
+
 
 ## References
 const projectile = preload("res://Projectiles/projectile.tscn")
@@ -39,7 +44,7 @@ signal player_died()
 var max_hp = 100  # Max Health
 var current_hp = max_hp  # Set the Player Current Health
 var speed = 300.0
-var base_dmg = 15  # Base dmg
+var base_dmg = 25  # Base dmg
 var dmg = base_dmg  # Set the Player dmg
 var dmg_multipler = 1.0  # 
 var kills = 0  # 
@@ -193,7 +198,7 @@ func _physics_process(delta):
 func collect(item: Object):
 	var world = get_tree().get_root().get_node("/root/World")
 	
-	print("Player Collected: ", item.name)
+	#print("Player Collected: ", item.name)
 	
 	if item.is_in_group("xp"):
 		var xp_drop = preload("res://Collectibles/xp.tscn").instantiate()
@@ -207,10 +212,19 @@ func collect(item: Object):
 	elif item.is_in_group("nuke"):
 		var enemies = get_tree().get_nodes_in_group("Enemy")
 		
+		# Destroy all enemies by removing them from the scene
 		for enemy in enemies:
 			if enemy.has_method("die") and !enemy.boss:
-				enemy.die()  # Destroy all enemies by removing them from the scene
+				enemy.die() 
 		world.current_enemies = 0  # Reset current enemies count in world script
+		
+		# Destroy Extra Nukes
+		for nuke in get_tree().get_nodes_in_group("nuke"):
+			nuke.queue_free()
+		world.current_nukes = 0  # Reset current nukes count in world
+		
+		world.current_items -= 1
+		
 		print("All enemies destroyed!")
 	elif  item.is_in_group("healing"):
 		if current_hp < max_hp:
@@ -220,8 +234,9 @@ func collect(item: Object):
 			current_hp = clamp(current_hp, 0, max_hp)
 			health_changed.emit(current_hp)
 			print("Player Healed: ", current_hp)
+			world.current_items -= 1
 	
-	world.current_items -= 1
+	
 
 ##
 func find_nearest_enemy():
@@ -291,7 +306,7 @@ func take_damage(dmg: int, source: Node):
 	
 	## Skips damage step if invincible
 	if invincible:
-		print("Player: Player is Invincible")
+		#print("Player: Player is Invincible")
 		return
 	
 	#if !invincible:
@@ -327,7 +342,11 @@ func upgrade(upgrade: String):
 		health_bar.set_max_health(max_hp)
 		health_changed.emit(current_hp)
 	elif upgrade == "speed":
-		speed *= 1.25
+		if speed < MAX_SPEED:
+			speed += 25
+		if ATTACK_INTERVAL > MAX_ATTACKSPEED:
+			ATTACK_INTERVAL -= 0.1
+		print("Player Speed: %s --- Player Attack Speed: %s" % [speed, ATTACK_INTERVAL])
 	elif upgrade == "dmg":
 		dmg_multipler += 0.15
 		dmg = base_dmg * dmg_multipler
@@ -337,7 +356,7 @@ func die():
 	is_alive = false
 	#visible = false
 	#update_player_visibility()
-	set_physics_process(false)
+	self.set_physics_process(false)
 	
 	BackgroundMusic.fade_out_and_stop(2.0)  # Fades out over 2 seconds, then stops
 
