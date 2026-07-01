@@ -56,6 +56,12 @@ Boss encounters:
 ## Core Systems Implemented (Antoine Tran)
 
 * Core gameplay systems
+
+## Playable Build
+
+A downloadable build of Neon Rebellion is available on itch.io:
+
+[Download Build Here]([YOUR_ITCH_LINK_HERE](https://instinctxkilla.itch.io/neon-rebellion))
 * Player movement and controls
 * Auto-attack systems
 * Enemy spawning and scaling
