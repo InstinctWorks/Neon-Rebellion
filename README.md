@@ -70,4 +70,4 @@ Boss encounters:
 
 A downloadable build of Neon Rebellion is available on itch.io:
 
-[Download Build Here]([YOUR_ITCH_LINK_HERE](https://instinctxkilla.itch.io/neon-rebellion))
+[Download Build Here](https://instinctxkilla.itch.io/neon-rebellion)
